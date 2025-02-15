@@ -21,7 +21,6 @@ const ContactCard = styled(Box)`
   justify-content: space-between;
   position: relative;
   transform-style: preserve-3d;
-  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
   transition: all 0.3s ease;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.2),
@@ -29,58 +28,45 @@ const ContactCard = styled(Box)`
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   
   &:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px);
+    transform: translateY(-5px);
     box-shadow: 
       0 30px 50px rgba(0, 0, 0, 0.3),
       0 6px 12px rgba(0, 0, 0, 0.1),
       inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 16px;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    pointer-events: none;
   }
 `;
 
 const StyledTextField = styled(TextField)`
   width: 100%;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
   
   & .MuiOutlinedInput-root {
     border-radius: 8px;
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.9);
     
-    &:hover fieldset {
-      border-color: #1976d2;
+    &:hover {
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
     &:focus-within {
+      background: white;
       transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
   }
   
-  & .MuiOutlinedInput-input {
-    position: relative;
-    z-index: 1;
-  }
-  
   & .MuiOutlinedInput-notchedOutline {
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    border-color: rgba(0, 0, 0, 0.1);
+    transition: border-color 0.2s ease;
   }
   
-  &:hover .MuiOutlinedInput-notchedOutline {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  &:hover .MuiOutlinedInput-notchedOutline,
+  & .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #1976d2;
   }
 `;
 
