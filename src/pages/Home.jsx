@@ -5,15 +5,16 @@ import { motion } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
 import FeatureBanner from '../components/Home/FeatureBanner';
 import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
+import Contact from '../components/Contact/Contact';
 
 const VideoBackground = styled('video')`
-  position: fixed;
+  position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   object-fit: cover;
 `;
@@ -80,13 +81,20 @@ const SloganText = styled(motion.div)`
   }
 `;
 
+const MainSection = styled(Box)`
+  background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+  min-height: 100vh;
+  padding: 4rem 0;
+  color: white;
+`;
+
 const Home = () => {
   return (
-    <>
-      <VideoBackground autoPlay muted loop playsInline>
-        <source src="/video/video 2.mp4" type="video/mp4" />
-      </VideoBackground>
+    <Box>
       <HeroSection>
+        <VideoBackground autoPlay muted loop playsInline>
+          <source src="/video/video 2.mp4" type="video/mp4" />
+        </VideoBackground>
         <ContentWrapper maxWidth="xl">
           <MainContent>
             <SearchForm />
@@ -115,6 +123,11 @@ const Home = () => {
               </SloganText>
             </SloganWrapper>
           </MainContent>
+        </ContentWrapper>
+      </HeroSection>
+      
+      <MainSection>
+        <Container maxWidth="xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -129,9 +142,10 @@ const Home = () => {
           >
             <PropertyTypeSlider />
           </motion.div>
-        </ContentWrapper>
-      </HeroSection>
-    </>
+        </Container>
+      </MainSection>
+      <Contact />
+    </Box>
   );
 };
 
