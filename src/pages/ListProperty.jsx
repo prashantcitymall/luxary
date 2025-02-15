@@ -31,14 +31,23 @@ const CustomStepper = styled(Stepper)(({ theme }) => ({
   }
 }));
 
+const PageWrapper = styled(Box)`
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #008080 0%, #20B2AA 100%);
+  padding: 80px 0;
+  
+  @media (max-width: 600px) {
+    padding: 60px 0;
+  }
+`;
+
 const StyledContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(4),
   maxWidth: '1000px',
   margin: '0 auto',
-  marginTop: '80px',
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(2),
-    marginTop: '60px',
   }
 }));
 
@@ -152,7 +161,8 @@ const ListProperty = () => {
   };
 
   return (
-    <StyledContainer>
+    <PageWrapper>
+      <StyledContainer>
       <Typography variant="h4" sx={{
         mb: 4,
         color: '#1a237e',
@@ -177,6 +187,7 @@ const ListProperty = () => {
         </Box>
       </FormWrapper>
     </StyledContainer>
+    </PageWrapper>
   );
 };
 

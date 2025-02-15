@@ -1,11 +1,14 @@
-import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import React, { lazy, Suspense } from 'react';
+import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
-import FeatureBanner from '../components/Home/FeatureBanner';
-import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
-import Contact from '../components/Contact/Contact';
+
+// Lazy load components
+const FeatureBanner = lazy(() => import('../components/Home/FeatureBanner'));
+const PropertyTypeSlider = lazy(() => import('../components/Home/PropertyTypeSlider'));
+const Contact = lazy(() => import('../components/Contact/Contact'));
+const Footer = lazy(() => import('../components/Footer/Footer'));
 
 const VideoBackground = styled('video')`
   position: absolute;
@@ -81,14 +84,52 @@ const SloganText = styled(motion.div)`
   }
 `;
 
-const MainSection = styled(Box)`
+const LoadingSpinner = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+`;
+
+const ContentSection = styled(Box)`
   background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
-  min-height: 100vh;
-  padding: 4rem 0;
   color: white;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  padding: 4rem 0 0;
+  
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 `;
 
 const Home = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Add smooth scrolling behavior to the document
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Preload components
+    Promise.all([
+      import('../components/Home/FeatureBanner'),
+      import('../components/Home/PropertyTypeSlider'),
+      import('../components/Contact/Contact')
+    ]).then(() => {
+      setIsLoading(false);
+    });
+
+    return () => {
+      document.documentElement.style.scrollBehavior = '';
+    };
+  }, []);
+
+  const fallbackLoader = (
+    <LoadingSpinner>
+      <CircularProgress sx={{ color: 'white' }} />
+    </LoadingSpinner>
+  );
+
   return (
     <Box>
       <HeroSection>
@@ -126,25 +167,54 @@ const Home = () => {
         </ContentWrapper>
       </HeroSection>
       
-      <MainSection>
-        <Container maxWidth="xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-          >
-            <FeatureBanner />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <PropertyTypeSlider />
-          </motion.div>
-        </Container>
-      </MainSection>
-      <Contact />
+      <ContentSection>
+        <AnimatePresence>
+          {!isLoading && (
+            <>
+              <Container maxWidth="xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <Suspense fallback={fallbackLoader}>
+                    <FeatureBanner />
+                  </Suspense>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                >
+                  <Suspense fallback={fallbackLoader}>
+                    <PropertyTypeSlider />
+                  </Suspense>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <Box sx={{ mt: -4 }}>
+                    <Suspense fallback={fallbackLoader}>
+                      <Contact />
+                    </Suspense>
+                  </Box>
+                </motion.div>
+              </Container>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+              >
+                <Suspense fallback={fallbackLoader}>
+                  <Footer />
+                </Suspense>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </ContentSection>
     </Box>
   );
 };

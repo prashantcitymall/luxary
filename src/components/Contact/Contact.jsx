@@ -7,20 +7,50 @@ import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 const ContactWrapper = styled(Box)`
-  background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
-  padding: 4rem 0;
+  width: 100%;
 `;
 
 const ContactCard = styled(Box)`
   background: white;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   margin: 1rem;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  
+  &:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px);
+    box-shadow: 
+      0 30px 50px rgba(0, 0, 0, 0.3),
+      0 6px 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    pointer-events: none;
+  }
 `;
 
 const StyledTextField = styled(TextField)`
@@ -29,10 +59,28 @@ const StyledTextField = styled(TextField)`
   
   & .MuiOutlinedInput-root {
     border-radius: 8px;
+    transition: transform 0.2s ease;
     
     &:hover fieldset {
       border-color: #1976d2;
     }
+    
+    &:focus-within {
+      transform: translateY(-2px);
+    }
+  }
+  
+  & .MuiOutlinedInput-input {
+    position: relative;
+    z-index: 1;
+  }
+  
+  & .MuiOutlinedInput-notchedOutline {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  &:hover .MuiOutlinedInput-notchedOutline {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -43,9 +91,37 @@ const SubmitButton = styled(Button)`
   font-size: 1rem;
   text-transform: none;
   background: #1976d2;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) translateZ(0);
+  transition: all 0.3s ease;
   
   &:hover {
     background: #1565c0;
+    transform: perspective(1000px) translateZ(10px);
+    box-shadow: 
+      0 10px 20px rgba(0, 0, 0, 0.2),
+      0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: perspective(1000px) translateZ(0);
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
   }
 `;
 
