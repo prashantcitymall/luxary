@@ -1,13 +1,23 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Box, Typography, IconButton, styled } from '@mui/material';
 import { motion } from 'framer-motion';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+const OuterContainer = styled(Box)`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+  margin-top: 2rem;
+`;
+
 const SliderContainer = styled(Box)`
   position: relative;
   padding: 2rem 0;
-  margin-top: 2rem;
+  overflow: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const SliderHeader = styled(Typography)`
@@ -18,19 +28,21 @@ const SliderHeader = styled(Typography)`
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const CardsContainer = styled(Box)`
+const CardsContainer = styled(motion.div)`
   display: flex;
   gap: 1.5rem;
-  overflow-x: auto;
+  cursor: grab;
   padding: 1rem 0.5rem;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -ms-overflow-style: none;
   scrollbar-width: none;
+  touch-action: pan-x;
   &::-webkit-scrollbar {
     display: none;
   }
-  & > * {
-    scroll-snap-align: start;
+  &:active {
+    cursor: grabbing;
   }
 `;
 
@@ -46,6 +58,7 @@ const Card = styled(motion.div)`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
 `;
 
 const CardImage = styled('img')`
@@ -155,6 +168,15 @@ const propertyTypes = [
 
 const PropertyTypeSlider = () => {
   const containerRef = useRef(null);
+  const [sliderWidth, setSliderWidth] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setSliderWidth(containerRef.current.scrollWidth);
+      setContainerWidth(containerRef.current.offsetWidth);
+    }
+  }, []);
 
   const scroll = (direction) => {
     const container = containerRef.current;
@@ -168,6 +190,7 @@ const PropertyTypeSlider = () => {
   };
 
   return (
+    <OuterContainer>
     <SliderContainer>
       <SliderHeader variant="h2">
         Discover your new favourite stay
@@ -195,9 +218,18 @@ const PropertyTypeSlider = () => {
 
       <CardsContainer
         ref={containerRef}
+        drag="x"
+        dragConstraints={{
+          left: -sliderWidth + containerWidth,
+          right: 0
+        }}
+        dragElastic={0.1}
+        dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+        whileTap={{ cursor: 'grabbing' }}
       >
         {propertyTypes.map((type) => (
           <Card
+            style={{ touchAction: 'none' }}
             key={type.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -222,6 +254,7 @@ const PropertyTypeSlider = () => {
         ))}
       </CardsContainer>
     </SliderContainer>
+    </OuterContainer>
   );
 };
 

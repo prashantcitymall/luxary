@@ -23,6 +23,19 @@ const theme = createTheme({
 });
 
 function App() {
+  React.useEffect(() => {
+    // Add global styles to prevent unwanted touch behaviors
+    document.body.style.overflowX = 'hidden';
+    document.body.style.overscrollBehavior = 'none';
+    document.body.style.touchAction = 'pan-y pinch-zoom';
+    
+    return () => {
+      document.body.style.overflowX = '';
+      document.body.style.overscrollBehavior = '';
+      document.body.style.touchAction = '';
+    };
+  }, []);
+
   return (
     <Router>
       <ThemeProvider theme={theme}>

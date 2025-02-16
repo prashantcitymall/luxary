@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import LocationSelector from '../LocationSelector/LocationSelector';
 import {
   Paper,
   Box,
@@ -306,23 +307,10 @@ const SearchForm = () => {
     rooms: 1
   });
   const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
-  const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [location, setLocation] = useState({ state: '', city: '' });
   const guestAnchorRef = useRef(null);
-  const locationAnchorRef = useRef(null);
 
-  const agraLocations = [
-    'Taj Mahal Area',
-    'Agra Fort Area',
-    'Fatehpur Sikri',
-    "Akbar's Tomb, Sikandra",
-    'Mehtab Bagh Area',
-    'Kinari Bazaar Area',
-    'Jama Masjid Area',
-    'Tomb of I\'timad-ud-Daulah',
-    'Sadar Bazaar Area',
-    'Ram Bagh Area'
-  ];
+
 
   const handlePriceChange = (event, newValue) => {
     setPriceRange(newValue);
@@ -361,13 +349,8 @@ const SearchForm = () => {
     setGuestDropdownOpen(false);
   };
 
-  const handleLocationClickAway = () => {
-    setLocationDropdownOpen(false);
-  };
-
-  const handleLocationSelect = (location) => {
-    setSelectedLocation(location);
-    setLocationDropdownOpen(false);
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation);
   };
 
   return (
@@ -383,41 +366,8 @@ const SearchForm = () => {
         
         <Box component="form" sx={{ mt: 3 }}>
           <Stack spacing={3}>
-            <Box sx={{ width: '100%' }}>
-              <LocationInput
-                fullWidth
-                ref={locationAnchorRef}
-                value={selectedLocation}
-                placeholder="Where in Agra?"
-                onClick={() => setLocationDropdownOpen(true)}
-                InputProps={{
-                  startAdornment: <LocationOnIcon sx={{ color: '#1a237e', mr: 1 }} />,
-                  endAdornment: <ExpandMoreIcon />,
-                  readOnly: true,
-                }}
-              />
-              <Popper
-                open={locationDropdownOpen}
-                anchorEl={locationAnchorRef.current}
-                placement="bottom-start"
-                style={{ zIndex: 1301 }}
-              >
-                <ClickAwayListener onClickAway={handleLocationClickAway}>
-                  <LocationDropdown elevation={4}>
-                    <List disablePadding>
-                      {agraLocations.map((location) => (
-                        <ListItem
-                          key={location}
-                          onClick={() => handleLocationSelect(location)}
-                          button
-                        >
-                          <ListItemText primary={location} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </LocationDropdown>
-                </ClickAwayListener>
-              </Popper>
+            <Box sx={{ width: '100%', mb: 2 }}>
+              <LocationSelector onLocationChange={handleLocationChange} />
             </Box>
 
             <Box sx={{ width: '100%' }}>

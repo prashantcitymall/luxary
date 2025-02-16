@@ -4,11 +4,11 @@ import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
 
-// Lazy load components
-const FeatureBanner = lazy(() => import('../components/Home/FeatureBanner'));
-const PropertyTypeSlider = lazy(() => import('../components/Home/PropertyTypeSlider'));
-const Contact = lazy(() => import('../components/Contact/Contact'));
-const Footer = lazy(() => import('../components/Footer/Footer'));
+// Import components directly to ensure they exist
+import FeatureBanner from '../components/Home/FeatureBanner';
+import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
+import Contact from '../components/Contact/Contact';
+import Footer from '../components/Footer/Footer';
 
 const VideoBackground = styled('video')`
   position: absolute;
@@ -40,6 +40,17 @@ const HeroSection = styled(Box)`
 
 
 
+const PageContainer = styled(Box)`
+  width: 100%;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overscroll-behavior: none;
+`;
+
 const ContentWrapper = styled(Container)`
   position: relative;
   display: flex;
@@ -47,6 +58,11 @@ const ContentWrapper = styled(Container)`
   justify-content: center;
   min-height: 100vh;
   padding-top: 80px; // Account for fixed header
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
 `;
 
 const MainContent = styled(Box)`
@@ -96,7 +112,10 @@ const ContentSection = styled(Box)`
   color: white;
   scroll-behavior: smooth;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 4rem 0 0;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
   
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;
@@ -109,16 +128,8 @@ const Home = () => {
   React.useEffect(() => {
     // Add smooth scrolling behavior to the document
     document.documentElement.style.scrollBehavior = 'smooth';
+    setIsLoading(false);
     
-    // Preload components
-    Promise.all([
-      import('../components/Home/FeatureBanner'),
-      import('../components/Home/PropertyTypeSlider'),
-      import('../components/Contact/Contact')
-    ]).then(() => {
-      setIsLoading(false);
-    });
-
     return () => {
       document.documentElement.style.scrollBehavior = '';
     };
@@ -131,7 +142,7 @@ const Home = () => {
   );
 
   return (
-    <Box>
+    <Box sx={{ overflowX: 'hidden', touchAction: 'pan-y pinch-zoom', overscrollBehavior: 'none' }}>
       <HeroSection>
         <VideoBackground autoPlay muted loop playsInline>
           <source src="/video/video 2.mp4" type="video/mp4" />
@@ -177,18 +188,14 @@ const Home = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <Suspense fallback={fallbackLoader}>
-                    <FeatureBanner />
-                  </Suspense>
+                  <FeatureBanner />
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
                 >
-                  <Suspense fallback={fallbackLoader}>
-                    <PropertyTypeSlider />
-                  </Suspense>
+                  <PropertyTypeSlider />
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -196,9 +203,7 @@ const Home = () => {
                   transition={{ duration: 0.4, delay: 0.3 }}
                 >
                   <Box sx={{ mt: -4 }}>
-                    <Suspense fallback={fallbackLoader}>
-                      <Contact />
-                    </Suspense>
+                    <Contact />
                   </Box>
                 </motion.div>
               </Container>
@@ -207,9 +212,7 @@ const Home = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
               >
-                <Suspense fallback={fallbackLoader}>
-                  <Footer />
-                </Suspense>
+                <Footer />
               </motion.div>
             </>
           )}
