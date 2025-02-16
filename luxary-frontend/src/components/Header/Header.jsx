@@ -246,19 +246,58 @@ const Header = () => {
                   PaperProps={{
                     sx: {
                       mt: 1,
-                      background: 'rgba(255, 255, 255, 0.95)',
+                      minWidth: '280px',
+                      background: 'rgba(13, 13, 25, 0.95)',
                       backdropFilter: 'blur(10px)',
                       borderRadius: '12px',
                       border: '1px solid rgba(255, 255, 255, 0.2)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                      color: '#fff'
                     }
                   }}
                 >
-                  <MenuItem onClick={handleProfileClose}>
-                    <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                  <Box sx={{ p: 2 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: '#64B5F6' }}>
+                      Personal Details
+                    </Typography>
+                    <Box sx={{ mb: 1 }}>
+                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                        Aadhar Number
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#fff' }}>
+                        {user?.aadhar_number || 'Not provided'}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ mb: 1 }}>
+                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                        Phone Number
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#fff' }}>
+                        {user?.phone || 'Not provided'}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ mb: 1 }}>
+                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                        Date of Birth
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#fff' }}>
+                        {user?.date_of_birth || 'Not provided'}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <MenuItem 
+                    onClick={handleLogout}
+                    sx={{ 
+                      color: '#FF5252',
+                      mt: 1,
+                      '&:hover': {
+                        background: 'rgba(255, 82, 82, 0.1)'
+                      }
+                    }}
+                  >
+                    Logout
                   </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>
             ) : (

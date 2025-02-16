@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/address-docs', require('./routes/addressDocs'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

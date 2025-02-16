@@ -13,6 +13,7 @@ import {
   Checkbox
 } from '@mui/material';
 import { authService } from '../../services/auth';
+import { useUser } from '../../context/UserContext';
 import { styled } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -51,6 +52,7 @@ const LoginButton = styled(Button)`
 `;
 
 const LoginModal = ({ open, onClose }) => {
+  const { login } = useUser();
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
@@ -98,29 +100,33 @@ const LoginModal = ({ open, onClose }) => {
     if (validateForm()) {
       setLoading(true);
       try {
-        const response = await authService.login({
+        // Format credentials properly
+        const credentials = {
           phone: formData.phoneNumber,
-          password: formData.password,
-          saveLocal: formData.saveLocal
-        });
+          password: formData.password
+        };
+
+        // Attempt login
+        const loginResponse = await authService.login(credentials);
+        
+        // Update user context
+        await login(loginResponse);
 
         setAlert({
           open: true,
-          message: 'Login successful!',
+          message: 'Login successful! Welcome back!',
           severity: 'success'
         });
 
-        // Set auth token for future requests
-        authService.setAuthToken(response.token);
-
+        // Close modal after a short delay
         setTimeout(() => {
           onClose();
-          window.location.reload(); // Refresh to update UI with user data
-        }, 1500);
+        }, 1000);
       } catch (error) {
+        console.error('Login error:', error);
         setAlert({
           open: true,
-          message: error.response?.data?.error || 'Login failed. Please try again.',
+          message: error.response?.data?.message || error.response?.data?.error || 'Login failed. Please check your credentials and try again.',
           severity: 'error'
         });
       } finally {

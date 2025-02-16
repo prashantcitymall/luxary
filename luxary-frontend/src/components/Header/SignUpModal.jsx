@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from '../../utils/dayjs';
 import { authService } from '../../services/auth';
+import { useUser } from '../../context/UserContext';
 import { Alert, Snackbar } from '@mui/material';
 import {
   Box,
@@ -57,6 +58,7 @@ const SignUpButton = styled(Button)`
 `;
 
 const SignUpModal = ({ open, onClose }) => {
+  const { login } = useUser();
   const [formData, setFormData] = useState({
     fullName: '',
     phoneNumber: '',
@@ -162,43 +164,43 @@ const SignUpModal = ({ open, onClose }) => {
           return;
         }
 
-        const userData = {
-          full_name: formData.fullName.trim(),
-          date_of_birth: dayjs(formData.dateOfBirth).format('YYYY-MM-DD'),
-          phone: formData.phoneNumber.trim(),
-          password: formData.password,
-          gender: formData.gender,
-          aadhar_number: formData.aadharNumber,
-        };
-        
-        if (formData.email && formData.email.trim()) {
-          userData.email = formData.email.trim();
+        // Send the form data directly to the auth service
+        const userData = { ...formData };
+        if (!userData.email?.trim()) {
+          delete userData.email;
         }
 
         console.log('Submitting form data...');
 
-        const response = await authService.register(userData);
-        console.log('Registration response:', response);
+        const registerResponse = await authService.register(userData);
+        if (registerResponse.success) {
+          // Automatically login after successful registration
+          const loginResponse = await authService.login({
+            phone: userData.phoneNumber,
+            password: userData.password
+          });
 
-        setAlert({
-          open: true,
-          message: 'Registration successful! Please log in.',
-          severity: 'success'
-        });
-        
-        // Clear form data
-        setFormData({
-          fullName: '',
-          phoneNumber: '',
-          gender: 'male',
-          email: '',
-          password: '',
-          dateOfBirth: dayjs().subtract(18, 'year')
-        });
+          // Set the user in context (this will fetch fresh user details)
+          await login(loginResponse);
 
+          setAlert({
+            open: true,
+            message: 'Registration successful! Welcome to Hotelify!',
+            severity: 'success'
+          });
+        } else {
+          setAlert({
+            open: true,
+            message: registerResponse.error || 'Registration failed. Please try again.',
+            severity: 'error'
+          });
+          return;
+        }
+
+        // Close the modal after a short delay to ensure data is loaded
         setTimeout(() => {
           onClose();
-        }, 1500);
+        }, 500);
       } catch (error) {
         console.error('Registration error:', error); // Debug log
         setAlert({

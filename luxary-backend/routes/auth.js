@@ -16,9 +16,10 @@ const pool = new Pool({
 
 // Middleware for input validation
 const validateUser = (req, res, next) => {
-  const { full_name, date_of_birth, phone, password, email, aadhar_number } = req.body;
+  const { full_name, date_of_birth, phone, password, email, aadhar_number, gender } = req.body;
   
-  if (!full_name || !date_of_birth || !phone || !password || !aadhar_number) {
+  if (!full_name || !date_of_birth || !phone || !password || !aadhar_number || !gender) {
+    console.log(req.body);
     return res.status(400).json({ error: 'All required fields must be provided' });
   }
 
@@ -34,33 +35,48 @@ const validateUser = (req, res, next) => {
     return res.status(400).json({ error: 'Invalid email format' });
   }
 
+  if (!['Male', 'Female'].includes(gender)) {
+    return res.status(400).json({ error: 'Gender must be either Male or Female' });
+  }
+
   next();
 };
 
 // CREATE - Register a new user
 router.post('/register', validateUser, async (req, res) => {
   try {
-    const { full_name, date_of_birth, phone, password, aadhar_proof, email } = req.body;
+    const { full_name, date_of_birth, phone, password, aadhar_number, email, gender } = req.body;
     
     // Check if user already exists
-    const userExists = await pool.query('SELECT * FROM users WHERE phone = $1', [phone]);
+    const userExists = await pool.query('SELECT * FROM users WHERE phone = $1 OR aadhar_number = $2', [phone, aadhar_number]);
     if (userExists.rows.length > 0) {
-      return res.status(400).json({ error: 'User with this phone number already exists' });
+      const existingField = userExists.rows[0].phone === phone ? 'phone number' : 'Aadhar number';
+      return res.status(400).json({ error: `User with this ${existingField} already exists` });
+    }
+
+    // Validate date format
+    const parsedDate = new Date(date_of_birth);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ error: 'Invalid date format for date_of_birth' });
     }
 
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
-    // Insert new user with aadhar number
+    // Insert new user
     const result = await pool.query(
-      'INSERT INTO users (full_name, date_of_birth, phone, password_hash, aadhar_number, email) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
-      [full_name, date_of_birth, phone, password_hash, aadhar_number, email]
+      'INSERT INTO users (full_name, date_of_birth, phone, password_hash, aadhar_number, email, gender) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [full_name, date_of_birth, phone, password_hash, aadhar_number, email || null, gender]
     );
 
+    // Remove password_hash from response
+    const { password_hash: _, ...userWithoutPassword } = result.rows[0];
+
     res.status(201).json({
+      success: true,
       message: 'User registered successfully',
-      userId: result.rows[0].id
+      user: userWithoutPassword
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -84,7 +100,7 @@ router.get('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
-      'SELECT id, full_name, date_of_birth, phone, email, created_at FROM users WHERE id = $1',
+      'SELECT id, full_name, date_of_birth, phone, email, created_at, aadhar_number FROM users WHERE id = $1',
       [id]
     );
 
@@ -165,7 +181,7 @@ router.post('/login', async (req, res) => {
 router.put('/users/:id', validateUser, async (req, res) => {
   try {
     const { id } = req.params;
-    const { full_name, date_of_birth, phone, password, aadhar_proof, email } = req.body;
+    const { full_name, date_of_birth, phone, password, aadhar_number, email, gender } = req.body;
 
     // Check if user exists
     const userExists = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
@@ -182,8 +198,8 @@ router.put('/users/:id', validateUser, async (req, res) => {
 
     // Update user
     await pool.query(
-      'UPDATE users SET full_name = $1, date_of_birth = $2, phone = $3, password_hash = $4, aadhar_proof = $5, email = $6 WHERE id = $7',
-      [full_name, date_of_birth, phone, password_hash, aadhar_proof, email, id]
+      'UPDATE users SET full_name = $1, date_of_birth = $2, phone = $3, password_hash = $4, aadhar_number = $5, email = $6, gender = $7 WHERE id = $8',
+      [full_name, date_of_birth, phone, password_hash, aadhar_number, email, gender, id]
     );
 
     res.json({ message: 'User updated successfully' });

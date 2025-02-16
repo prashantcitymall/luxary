@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -6,12 +6,17 @@ import {
   Typography,
   Box,
   Button,
-  styled
+  styled,
+  LinearProgress,
+  Alert,
+  Snackbar,
+  TextField
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { motion } from 'framer-motion';
+import { uploadService } from '../../services/upload';
 
 const StyledDialog = styled(Dialog)`
   .MuiDialog-paper {
@@ -60,14 +65,96 @@ const HiddenInput = styled('input')`
 
 const UploadModal = ({ open, onClose }) => {
   const fileInputRef = useRef(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  const handleFileUpload = (event) => {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      // Handle the file upload here
-      console.log('File selected:', file);
+    if (!file) return;
+
+    try {
+      // Validate file type and size
+      uploadService.validateFile(file);
+      setSelectedFile(file);
+      setErrors({});
+    } catch (error) {
+      setErrors({ file: error.message });
+      setSelectedFile(null);
     }
-    onClose();
+  };
+
+  const handlePhoneChange = (event) => {
+    const value = event.target.value.replace(/\D/g, '').slice(0, 10);
+    setPhoneNumber(value);
+    setErrors({});
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!phoneNumber || phoneNumber.length !== 10) {
+      newErrors.phone = 'Please enter a valid 10-digit phone number';
+    }
+
+    if (!selectedFile) {
+      newErrors.file = 'Please select a file to upload';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleUpload = async () => {
+    if (!validateForm()) return;
+
+    try {
+      setIsUploading(true);
+      setUploadProgress(0);
+
+      // Upload the file with phone number
+      const response = await uploadService.uploadFile(selectedFile, phoneNumber, (progress) => {
+        setUploadProgress(progress);
+      });
+
+      setAlert({
+        open: true,
+        message: response.message || 'File uploaded successfully!',
+        severity: 'success'
+      });
+
+      // Reset form and close modal after success
+      setSelectedFile(null);
+      setPhoneNumber('');
+      setTimeout(() => {
+        onClose();
+        setIsUploading(false);
+        setUploadProgress(0);
+      }, 1500);
+
+    } catch (error) {
+      console.error('Upload error:', error);
+      let errorMessage = 'Failed to upload file';
+      
+      if (error.message.includes('Authentication')) {
+        errorMessage = 'Please login before uploading documents';
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setAlert({
+        open: true,
+        message: errorMessage,
+        severity: 'error'
+      });
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   const handleCamera = async () => {
@@ -98,6 +185,44 @@ const UploadModal = ({ open, onClose }) => {
         </IconButton>
       </Box>
       <DialogContent sx={{ p: 3 }}>
+        <Box sx={{ mb: 3 }}>
+          <TextField
+            fullWidth
+            label="Phone Number"
+            value={phoneNumber}
+            onChange={handlePhoneChange}
+            error={!!errors.phone}
+            helperText={errors.phone}
+            placeholder="Enter 10-digit phone number"
+            sx={{ mb: 2 }}
+            inputProps={{
+              maxLength: 10,
+              pattern: '[0-9]*'
+            }}
+          />
+        </Box>
+        {isUploading && (
+          <Box sx={{ width: '100%', mb: 2 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              Uploading... {uploadProgress}%
+            </Typography>
+            <LinearProgress variant="determinate" value={uploadProgress} />
+          </Box>
+        )}
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={6000}
+          onClose={() => setAlert({ ...alert, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert 
+            severity={alert.severity} 
+            onClose={() => setAlert({ ...alert, open: false })}
+            sx={{ width: '100%' }}
+          >
+            {alert.message}
+          </Alert>
+        </Snackbar>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -106,8 +231,8 @@ const UploadModal = ({ open, onClose }) => {
           <HiddenInput
             ref={fileInputRef}
             type="file"
-            accept="image/*,application/pdf"
-            onChange={handleFileUpload}
+            accept={uploadService.getAcceptedExtensions()}
+            onChange={handleFileSelect}
           />
           
           <UploadOption
@@ -122,7 +247,17 @@ const UploadModal = ({ open, onClose }) => {
                 Choose from Device
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Upload documents from your computer or phone
+                Upload images (jpg, png, gif) or documents (pdf, doc, docx)
+              {selectedFile && (
+                <Typography variant="caption" color="primary.main" sx={{ display: 'block', mt: 1 }}>
+                  Selected: {selectedFile.name}
+                </Typography>
+              )}
+              {errors.file && (
+                <Typography variant="caption" color="error" sx={{ display: 'block', mt: 1 }}>
+                  {errors.file}
+                </Typography>
+              )}
               </Typography>
             </div>
           </UploadOption>
@@ -144,6 +279,23 @@ const UploadModal = ({ open, onClose }) => {
             </div>
           </UploadOption>
         </motion.div>
+
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpload}
+            disabled={isUploading || !selectedFile}
+            sx={{
+              borderRadius: '8px',
+              textTransform: 'none',
+              px: 4,
+              py: 1.5
+            }}
+          >
+            {isUploading ? 'Uploading...' : 'Upload'}
+          </Button>
+        </Box>
       </DialogContent>
     </StyledDialog>
   );
