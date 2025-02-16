@@ -18,7 +18,8 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from '../../utils/dayjs';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import AddIcon from '@mui/icons-material/Add';
@@ -298,8 +299,8 @@ const SearchButton = styled(Button)`
 `;
 
 const SearchForm = () => {
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
+  const [checkInDate, setCheckInDate] = useState(dayjs());
+  const [checkOutDate, setCheckOutDate] = useState(dayjs().add(1, 'day'));
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [guests, setGuests] = useState({
     adults: 1,
@@ -476,20 +477,35 @@ const SearchForm = () => {
             </Box>
 
             <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: '1fr 1fr' }}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Check-in Date"
                   value={checkInDate}
-                  onChange={setCheckInDate}
-                  renderInput={(params) => <TextField {...params} />}
-                  minDate={new Date()}
+                  onChange={(newValue) => {
+                    setCheckInDate(newValue);
+                    if (checkOutDate && newValue && checkOutDate.isBefore(newValue)) {
+                      setCheckOutDate(newValue.add(1, 'day'));
+                    }
+                  }}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: false
+                    }
+                  }}
+                  minDate={dayjs()}
                 />
                 <DatePicker
                   label="Check-out Date"
                   value={checkOutDate}
                   onChange={setCheckOutDate}
-                  renderInput={(params) => <TextField {...params} />}
-                  minDate={checkInDate || new Date()}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: false
+                    }
+                  }}
+                  minDate={checkInDate ? checkInDate.add(1, 'day') : dayjs().add(1, 'day')}
                 />
               </LocalizationProvider>
             </Box>

@@ -7,7 +7,12 @@ import {
   Modal,
   InputAdornment,
   IconButton,
+  Alert,
+  Snackbar,
+  FormControlLabel,
+  Checkbox
 } from '@mui/material';
+import { authService } from '../../services/auth';
 import { styled } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -49,6 +54,7 @@ const LoginModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
+    saveLocal: false
   });
   
   const [errors, setErrors] = useState({});
@@ -83,12 +89,43 @@ const LoginModal = ({ open, onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (event) => {
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      onClose();
+      setLoading(true);
+      try {
+        const response = await authService.login({
+          phone: formData.phoneNumber,
+          password: formData.password,
+          saveLocal: formData.saveLocal
+        });
+
+        setAlert({
+          open: true,
+          message: 'Login successful!',
+          severity: 'success'
+        });
+
+        // Set auth token for future requests
+        authService.setAuthToken(response.token);
+
+        setTimeout(() => {
+          onClose();
+          window.location.reload(); // Refresh to update UI with user data
+        }, 1500);
+      } catch (error) {
+        setAlert({
+          open: true,
+          message: error.response?.data?.error || 'Login failed. Please try again.',
+          severity: 'error'
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
   
@@ -100,6 +137,17 @@ const LoginModal = ({ open, onClose }) => {
       aria-describedby="login-form"
     >
       <FormBox component="form" onSubmit={handleSubmit}>
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={6000}
+          onClose={() => setAlert({ ...alert, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+            {alert.message}
+          </Alert>
+        </Snackbar>
+
         <Typography variant="h5" align="center" gutterBottom sx={{ color: '#1a237e', fontWeight: 600 }}>
           Login
         </Typography>
@@ -146,8 +194,21 @@ const LoginModal = ({ open, onClose }) => {
           }}
         />
         
-        <LoginButton type="submit">
-          Login
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.saveLocal}
+              onChange={(e) => setFormData(prev => ({ ...prev, saveLocal: e.target.checked }))}
+              name="saveLocal"
+              color="primary"
+            />
+          }
+          label="Save login data locally"
+          sx={{ mb: 2 }}
+        />
+
+        <LoginButton type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
         </LoginButton>
       </FormBox>
     </Modal>

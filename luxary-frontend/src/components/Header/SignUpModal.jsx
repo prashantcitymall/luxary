@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from '../../utils/dayjs';
+import { authService } from '../../services/auth';
+import { Alert, Snackbar } from '@mui/material';
 import {
   Box,
   TextField,
@@ -57,32 +63,61 @@ const SignUpModal = ({ open, onClose }) => {
     gender: 'male',
     email: '',
     password: '',
+    dateOfBirth: dayjs().subtract(18, 'year'),
+    aadharNumber: '',
   });
   
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const validateForm = () => {
     const newErrors = {};
+
+    if (!formData.aadharNumber) {
+      newErrors.aadharNumber = 'Aadhar number is required';    
+    } else if (!/^\d{12}$/.test(formData.aadharNumber)) {
+      newErrors.aadharNumber = 'Aadhar number must be exactly 12 digits';
+    }
     
-    if (!formData.fullName.trim()) {
+    // Validate full name
+    if (!formData.fullName || !formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required';
     }
     
-    if (!formData.phoneNumber.trim()) {
+    // Validate phone number
+    if (!formData.phoneNumber || !formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = 'Phone number must be exactly 10 digits';
     }
     
+    // Validate email (optional)
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Invalid email address';
     }
     
-    if (!formData.password) {
+    // Validate password
+    if (!formData.password || !formData.password.trim()) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    // Validate date of birth
+    if (!formData.dateOfBirth || !dayjs.isDayjs(formData.dateOfBirth)) {
+      newErrors.dateOfBirth = 'Date of birth is required';
+    } else {
+      const age = dayjs().diff(formData.dateOfBirth, 'year');
+      if (age < 18) {
+        newErrors.dateOfBirth = 'You must be at least 18 years old';
+      }
+    }
+
+    // Validate Aadhar number
+    if (!formData.aadharNumber) {
+      newErrors.aadharNumber = 'Aadhar number is required';
+    } else if (!/^\d{12}$/.test(formData.aadharNumber)) {
+      newErrors.aadharNumber = 'Aadhar number must be exactly 12 digits';
     }
     
     setErrors(newErrors);
@@ -97,16 +132,83 @@ const SignUpModal = ({ open, onClose }) => {
       setFormData(prev => ({ ...prev, [name]: digits }));
       return;
     }
+
+    if (name === 'aadharNumber') {
+      const digits = value.replace(/\D/g, '').slice(0, 12);
+      setFormData(prev => ({ ...prev, [name]: digits }));
+      return;
+    }
     
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (event) => {
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrors({});
     
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      onClose();
+      setLoading(true);
+      try {
+        // Ensure all required fields are properly formatted
+        if (formData.aadharNumber.length !== 12) {
+          setAlert({
+            open: true,
+            message: 'Aadhar number must be 12 digits',
+            severity: 'error'
+          });
+          return;
+        }
+
+        const userData = {
+          full_name: formData.fullName.trim(),
+          date_of_birth: dayjs(formData.dateOfBirth).format('YYYY-MM-DD'),
+          phone: formData.phoneNumber.trim(),
+          password: formData.password,
+          gender: formData.gender,
+          aadhar_number: formData.aadharNumber,
+        };
+        
+        if (formData.email && formData.email.trim()) {
+          userData.email = formData.email.trim();
+        }
+
+        console.log('Submitting form data...');
+
+        const response = await authService.register(userData);
+        console.log('Registration response:', response);
+
+        setAlert({
+          open: true,
+          message: 'Registration successful! Please log in.',
+          severity: 'success'
+        });
+        
+        // Clear form data
+        setFormData({
+          fullName: '',
+          phoneNumber: '',
+          gender: 'male',
+          email: '',
+          password: '',
+          dateOfBirth: dayjs().subtract(18, 'year')
+        });
+
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      } catch (error) {
+        console.error('Registration error:', error); // Debug log
+        setAlert({
+          open: true,
+          message: error.response?.data?.error || 'Registration failed. Please try again.',
+          severity: 'error'
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
   
@@ -121,6 +223,16 @@ const SignUpModal = ({ open, onClose }) => {
         <Typography variant="h5" align="center" gutterBottom sx={{ color: '#1a237e', fontWeight: 600 }}>
           Sign Up
         </Typography>
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={6000}
+          onClose={() => setAlert({ ...alert, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+            {alert.message}
+          </Alert>
+        </Snackbar>
         
         <TextField
           fullWidth
@@ -165,6 +277,24 @@ const SignUpModal = ({ open, onClose }) => {
         
         <TextField
           fullWidth
+          label="Aadhar Number"
+          name="aadharNumber"
+          value={formData.aadharNumber}
+          onChange={handleChange}
+          error={!!errors.aadharNumber}
+          helperText={errors.aadharNumber}
+          required
+          size="small"
+          inputProps={{
+            maxLength: 12,
+            pattern: '[0-9]*',
+            inputMode: 'numeric'
+          }}
+          sx={{ mb: 2 }}
+        />
+
+        <TextField
+          fullWidth
           label="Email (Optional)"
           name="email"
           type="email"
@@ -175,6 +305,27 @@ const SignUpModal = ({ open, onClose }) => {
           size="small"
         />
         
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date of Birth"
+            value={formData.dateOfBirth}
+            onChange={(newValue) => {
+              setFormData(prev => ({ ...prev, dateOfBirth: newValue }));
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                error: !!errors.dateOfBirth,
+                helperText: errors.dateOfBirth,
+                size: "small",
+                required: true
+              }
+            }}
+            disableFuture
+            format="DD/MM/YYYY"
+          />
+        </LocalizationProvider>
+
         <TextField
           fullWidth
           label="Password"
@@ -201,7 +352,7 @@ const SignUpModal = ({ open, onClose }) => {
           }}
         />
         
-        <SignUpButton type="submit">
+        <SignUpButton type="submit" disabled={loading}>
           Sign Up
         </SignUpButton>
       </FormBox>

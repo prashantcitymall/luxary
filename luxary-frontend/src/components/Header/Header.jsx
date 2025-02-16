@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Badge, Divider } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+  Badge,
+  Divider,
+  Avatar,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import HomeIcon from '@mui/icons-material/Home';
-import HouseIcon from '@mui/icons-material/House';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SignUpModal from './SignUpModal';
 import LoginModal from './LoginModal';
-import CartModal from './CartModal';
 import UploadModal from './UploadModal';
+import { useUser } from '../../context/UserContext';
 
 const StyledAppBar = styled(AppBar)`
   background: rgba(13, 13, 25, 0.8);
@@ -21,6 +31,8 @@ const StyledAppBar = styled(AppBar)`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 `;
+
+
 
 const Logo = styled(Typography)`
   color: #fff;
@@ -42,6 +54,15 @@ const NavButton = styled(Button)`
   text-transform: none;
   font-size: 0.95rem;
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
   overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
@@ -75,8 +96,22 @@ const Header = () => {
   const navigate = useNavigate();
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { user, logout } = useUser();
+
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleProfileClose();
+    logout();
+  };
   return (
     <StyledAppBar position="fixed">
       <Toolbar>
@@ -86,9 +121,29 @@ const Header = () => {
           transition={{ duration: 0.5 }}
         >
           <Box display="flex" alignItems="center" gap={3}>
-            <Box display="flex" alignItems="center">
-              <HomeIcon sx={{ fontSize: 32, mr: 1, color: '#64B5F6' }} />
-              <Logo variant="h6">HOTELIFY</Logo>
+            <Box 
+              display="flex" 
+              alignItems="center" 
+              onClick={() => navigate('/')} 
+              sx={{ 
+                cursor: 'pointer',
+                '&:hover': {
+                  '& .logo-icon': {
+                    transform: 'scale(1.1)',
+                    transition: 'transform 0.3s ease'
+                  },
+                  '& .logo-text': {
+                    opacity: 0.8,
+                    transition: 'opacity 0.3s ease'
+                  }
+                }
+              }}
+              component={motion.div}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <HomeIcon className="logo-icon" sx={{ fontSize: 32, mr: 1, color: '#64B5F6' }} />
+              <Logo className="logo-text" variant="h6">HOTELIFY</Logo>
             </Box>
             <Divider orientation="vertical" sx={{ height: 24, borderColor: 'rgba(255,255,255,0.2)' }} />
             <Box
@@ -123,77 +178,124 @@ const Header = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Box display="flex" alignItems="center">
-            <NavButton 
-              onClick={() => navigate('/')}
-              startIcon={<HouseIcon />}
-              sx={{
-                background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
-                borderColor: 'rgba(100, 181, 246, 0.3)'
-              }}
-            >
-              Home
-            </NavButton>
+
             <NavButton 
               onClick={() => navigate('/list-property')}
               startIcon={<HomeWorkIcon />}
             >
               List Property
             </NavButton>
-            <NavButton 
-              startIcon={<FavoriteIcon />}
-              sx={{
-                background: 'linear-gradient(45deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.1))',
-                borderColor: 'rgba(244, 67, 54, 0.3)'
-              }}
-            >
-              Wishlist
-            </NavButton>
             <IconButton
               component={motion.button}
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              sx={{ color: 'white', mr: 2 }}
-              onClick={() => setIsCartOpen(true)}
-            >
-              <Badge badgeContent={0} color="error" sx={{
-                '& .MuiBadge-badge': {
-                  background: 'linear-gradient(45deg, #ff4b4b, #ff6b6b)',
-                  border: '2px solid rgba(13, 13, 25, 0.8)',
-                }
-              }}>
-                <ShoppingCartOutlinedIcon />
-              </Badge>
-            </IconButton>
-            <NavButton startIcon={<AccountCircleIcon />}>Profile</NavButton>
-            <NavButton 
-              onClick={() => setIsLoginOpen(true)}
               sx={{ 
-                background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
-                borderColor: 'rgba(100, 181, 246, 0.3)'
-              }}
-            >
-              Login
-            </NavButton>
-            <NavButton 
-              onClick={() => setIsSignUpOpen(true)}
-              sx={{ 
-                background: 'linear-gradient(45deg, #1E88E5, #1565C0)',
-                border: 'none',
+                color: 'white', 
+                mr: 2,
+                background: 'linear-gradient(45deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.1))',
+                padding: '8px',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #1976D2, #0D47A1)',
-                  boxShadow: '0 8px 25px rgba(30, 136, 229, 0.4)'
+                  background: 'linear-gradient(45deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.2))',
                 }
               }}
             >
-              Sign Up
-            </NavButton>
+              <FavoriteIcon />
+            </IconButton>
+            {user ? (
+              <>
+                <Box
+                  onClick={handleProfileClick}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    cursor: 'pointer',
+                    padding: '6px 16px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
+                    border: '1px solid rgba(100, 181, 246, 0.3)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.2), rgba(30, 136, 229, 0.2))',
+                    }
+                  }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      bgcolor: '#1a237e',
+                      fontSize: '0.9rem'
+                    }}
+                  >
+                    {user.full_name.charAt(0)}
+                  </Avatar>
+                  <Typography
+                    sx={{
+                      color: '#fff',
+                      fontSize: '0.9rem',
+                      fontWeight: 500
+                    }}
+                  >
+                    {user.full_name}
+                  </Typography>
+                </Box>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleProfileClose}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      background: 'rgba(255, 255, 255, 0.95)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+                    }
+                  }}
+                >
+                  <MenuItem onClick={handleProfileClose}>
+                    <AccountCircleIcon sx={{ mr: 1 }} /> Profile
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <NavButton 
+                onClick={() => setIsLoginOpen(true)}
+                sx={{ 
+                  background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
+                  borderColor: 'rgba(100, 181, 246, 0.3)'
+                }}
+              >
+                Login
+              </NavButton>
+            )}
+            {!user && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <NavButton 
+                  onClick={() => setIsSignUpOpen(true)}
+                  sx={{ 
+                    background: 'linear-gradient(45deg, #1E88E5, #1565C0)',
+                    border: 'none',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #1976D2, #0D47A1)',
+                      boxShadow: '0 8px 25px rgba(30, 136, 229, 0.4)'
+                    }
+                  }}
+                >
+                  Sign Up
+                </NavButton>
+              </motion.div>
+            )}
             <SignUpModal 
               open={isSignUpOpen}
               onClose={() => setIsSignUpOpen(false)}
-            />
-            <CartModal 
-              open={isCartOpen}
-              onClose={() => setIsCartOpen(false)}
             />
             <UploadModal
               open={isUploadOpen}

@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { UserProvider } from './context/UserContext';
 import Header from './components/Header/Header';
 import Home from './pages/Home';
 import ListProperty from './pages/ListProperty';
@@ -39,13 +40,15 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/list-property" element={<ListProperty />} />
-          </Routes>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <UserProvider>
+            <CssBaseline />
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/list-property" element={<ListProperty />} />
+            </Routes>
+          </UserProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </Router>

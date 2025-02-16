@@ -77,15 +77,24 @@ const LocationSelector = ({ onLocationChange }) => {
   const [selectedPlace, setSelectedPlace] = useState('');
   const [cities, setCities] = useState([]);
   const [places, setPlaces] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [stateSearchTerm, setStateSearchTerm] = useState('');
+  const [citySearchTerm, setCitySearchTerm] = useState('');
   const [isStateOpen, setIsStateOpen] = useState(false);
+  const [isCityOpen, setIsCityOpen] = useState(false);
   
-  // Memoize filtered states to prevent unnecessary re-renders
+  // Memoize filtered states and cities to prevent unnecessary re-renders
   const filteredStates = React.useMemo(() => 
     indianStates.filter(state =>
-      state.toLowerCase().includes(searchTerm.toLowerCase().trim())
+      state.toLowerCase().includes(stateSearchTerm.toLowerCase().trim())
     ),
-    [searchTerm]
+    [stateSearchTerm]
+  );
+
+  const filteredCities = React.useMemo(() => 
+    cities.filter(city =>
+      city.toLowerCase().includes(citySearchTerm.toLowerCase().trim())
+    ),
+    [cities, citySearchTerm]
   );
 
   useEffect(() => {
@@ -136,12 +145,12 @@ const LocationSelector = ({ onLocationChange }) => {
           onOpen={() => {
             setIsStateOpen(true);
             // Clear search when opening
-            setSearchTerm('');
+            setStateSearchTerm('');
           }}
           onClose={() => {
             setIsStateOpen(false);
             // Clear search when closing
-            setSearchTerm('');
+            setStateSearchTerm('');
           }}
           MenuProps={{
             anchorOrigin: {
@@ -177,11 +186,11 @@ const LocationSelector = ({ onLocationChange }) => {
               <SearchTextField
                 size="small"
                 placeholder="Search state..."
-                value={searchTerm}
+                value={stateSearchTerm}
                 onChange={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  setSearchTerm(e.target.value);
+                  setStateSearchTerm(e.target.value);
                 }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -241,8 +250,98 @@ const LocationSelector = ({ onLocationChange }) => {
           value={selectedCity}
           label="City"
           onChange={handleCityChange}
+          onOpen={() => {
+            setIsCityOpen(true);
+            setCitySearchTerm('');
+          }}
+          onClose={() => {
+            setIsCityOpen(false);
+            setCitySearchTerm('');
+          }}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
+            PaperProps: {
+              style: {
+                maxHeight: 400,
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(10px)'
+              }
+            }
+          }}
         >
-          {cities.map((city) => (
+          {isCityOpen && (
+            <Box 
+              component="li"
+              style={{ 
+                position: 'sticky', 
+                top: 0, 
+                backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                backdropFilter: 'blur(10px)',
+                zIndex: 1,
+                padding: '8px 16px',
+                margin: 0
+              }}
+            >
+              <SearchTextField
+                size="small"
+                placeholder="Search city..."
+                value={citySearchTerm}
+                onChange={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCitySearchTerm(e.target.value);
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onKeyDown={(e) => {
+                  e.stopPropagation();
+                }}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  backgroundColor: '#f5f5f5',
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#fafafa'
+                    },
+                    '& fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.23)'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.87)'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1976d2'
+                    }
+                  },
+                  '& .MuiInputBase-input': {
+                    color: 'rgba(0, 0, 0, 0.87)'
+                  },
+                  '& .MuiInputAdornment-root': {
+                    color: 'rgba(0, 0, 0, 0.54)'
+                  }
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+          )}
+          {filteredCities.map((city) => (
             <MenuItem key={city} value={city}>
               {city}
             </MenuItem>
