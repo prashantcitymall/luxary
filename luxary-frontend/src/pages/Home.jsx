@@ -3,6 +3,7 @@ import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
+import ToggleSwitch from '../components/ToggleSwitch/ToggleSwitch';
 
 // Import components directly to ensure they exist
 import FeatureBanner from '../components/Home/FeatureBanner';
@@ -13,15 +14,16 @@ import Footer from '../components/Footer/Footer';
 
 
 
-const HeroSection = styled(Box)`
+const HeroSection = styled(Box)(({ isDarkTheme }) => `
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(135deg, #f49e4c, #30001A);
-`;
+  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease-in-out;
+`);
 
 
 
-const PageContainer = styled(Box)`
+const PageContainer = styled(Box)(({ isDarkTheme }) => `
   width: 100%;
   overflow-x: hidden;
   position: fixed;
@@ -30,8 +32,9 @@ const PageContainer = styled(Box)`
   right: 0;
   bottom: 0;
   overscroll-behavior: none;
-  background: linear-gradient(135deg, #f49e4c, #30001A);
-`;
+  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease-in-out;
+`);
 
 const ContentWrapper = styled(Container)`
   position: relative;
@@ -131,7 +134,7 @@ const LoadingSpinner = styled(Box)`
   padding: 2rem;
 `;
 
-const ContentSection = styled(Box)`
+const ContentSection = styled(Box)(({ isDarkTheme }) => `
   color: white;
   scroll-behavior: smooth;
   overflow-y: auto;
@@ -140,7 +143,8 @@ const ContentSection = styled(Box)`
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
   position: relative;
-  background: linear-gradient(135deg, #f49e4c, #30001A);
+  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease-in-out;
   
   & > * {
     position: relative;
@@ -150,10 +154,11 @@ const ContentSection = styled(Box)`
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;
   }
-`;
+`);
 
 const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
   React.useEffect(() => {
     // Add smooth scrolling behavior to the document
@@ -172,9 +177,33 @@ const Home = () => {
   );
 
   return (
-    <Box sx={{ overflowX: 'hidden', touchAction: 'pan-y pinch-zoom', overscrollBehavior: 'none' }}>
-      <HeroSection>
+    <Box sx={{ 
+      overflowX: 'hidden', 
+      touchAction: 'pan-y pinch-zoom', 
+      overscrollBehavior: 'none',
+      background: isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)',
+      transition: 'background 0.3s ease-in-out'
+    }}>
+      <HeroSection isDarkTheme={isDarkTheme}>
         <ContentWrapper maxWidth="xl">
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            mb: 4,
+            mt: 0,
+            '& > *': {
+              transform: 'scale(0.95)',
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(0.98)',
+              }
+            }
+          }}>
+            <ToggleSwitch
+              checked={isDarkTheme}
+              onChange={(e) => setIsDarkTheme(e.target.checked)}
+            />
+          </Box>
           <MainContent>
             <SearchForm />
             <SloganWrapper>
