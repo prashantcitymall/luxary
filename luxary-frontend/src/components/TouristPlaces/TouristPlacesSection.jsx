@@ -25,12 +25,17 @@ import { useNavigate } from 'react-router-dom';
 import { states } from '../../data/touristPlaces';
 
 const SectionContainer = styled(Box)`
-  padding: 4rem 0;
+  padding: 2rem 0;
   background: linear-gradient(rgba(244, 158, 76, 0.85), rgba(48, 0, 26, 0.85)), url('/images/tourist%20place%20.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   color: white;
+  width: 65%;
+  margin-left: auto;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledAccordion = styled(Accordion)`
@@ -38,7 +43,8 @@ const StyledAccordion = styled(Accordion)`
   color: white;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 8px 0;
+  margin: 8px;
+  transform: scale(0.9);
   
   &:before {
     display: none;
@@ -74,9 +80,10 @@ const PlaceCard = styled(motion(Card))`
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease;
+  transform: scale(0.9);
   
   &:hover {
-    transform: translateY(-8px);
+    transform: scale(0.9) translateY(-8px);
   }
 `;
 
@@ -137,7 +144,7 @@ const TouristPlacesSection = () => {
   return (
     <SectionContainer>
       <Container maxWidth="xl">
-        <Typography variant="h3" component="h2" sx={{ mb: 4, textAlign: 'center' }}>
+        <Typography variant="h4" component="h2" sx={{ mb: 3, textAlign: 'center', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
           Famous Tourist Places
         </Typography>
         

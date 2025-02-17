@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { indianStates } from '../utils/indianLocations';
+import React, { useState } from 'react';
+import { famousCities } from '../utils/famousCities';
 import {
   FormControl,
   InputLabel,
@@ -26,8 +25,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 const menuProps = {
   PaperProps: {
     style: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      boxShadow: 'none',
+      background: '#8B0000',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
       borderRadius: '8px',
       border: '1px solid rgba(255, 255, 255, 0.1)',
       backdropFilter: 'blur(8px)',
@@ -36,19 +35,20 @@ const menuProps = {
         paddingBottom: 0,
       },
       '& .MuiMenuItem-root': {
-        color: 'white',
+        color: '#FFFFFF',
       },
     },
   },
 };
 
 const StyledSelect = styled(Select)(({ theme }) => ({
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  background: '#8B0000',
   backdropFilter: 'blur(8px)',
   borderRadius: '8px',
   '& .MuiSelect-select': {
     backgroundColor: 'transparent',
-    color: 'white',
+    color: '#FFFFFF !important',
+    fontWeight: 500,
     padding: '10px 15px',
     '@media (max-width: 600px)': {
       padding: '8px 12px',
@@ -56,13 +56,13 @@ const StyledSelect = styled(Select)(({ theme }) => ({
     },
   },
   '& .MuiOutlinedInput-notchedOutline': {
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    border: '2px solid #8B0000',
   },
   '&:hover .MuiOutlinedInput-notchedOutline': {
-    border: '1px solid rgba(255, 255, 255, 0.5)',
+    border: '2px solid #8B0000',
   },
   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    border: '1px solid rgba(255, 255, 255, 0.7)',
+    border: '2px solid #8B0000',
   },
   '& .MuiSelect-icon': {
     color: 'white',
@@ -73,20 +73,23 @@ const StyledSelect = styled(Select)(({ theme }) => ({
 }));
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-  backgroundColor: 'transparent !important',
-  color: 'white !important',
+  background: '#8B0000 !important',
+  color: '#FFFFFF !important',
+  fontWeight: 500,
   padding: '10px 15px',
   '@media (max-width: 600px)': {
     padding: '8px 12px',
     fontSize: '0.875rem',
   },
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.1) !important',
+    background: '#630000 !important',
   },
   '&.Mui-selected': {
-    backgroundColor: 'rgba(255, 255, 255, 0.15) !important',
+    background: '#4B0000 !important',
+    color: '#FFFFFF !important',
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2) !important',
+      background: '#630000 !important',
+      color: '#FFFFFF !important',
     },
   },
 }));
@@ -95,6 +98,23 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   marginBottom: '1rem',
   width: '100%',
   maxWidth: '400px',
+  '& .MuiInputLabel-root': {
+    color: '#FFFFFF',
+    '&.Mui-focused': {
+      color: '#FFFFFF'
+    }
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#8B0000'
+    },
+    '&:hover fieldset': {
+      borderColor: '#8B0000'
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#8B0000'
+    }
+  },
   '@media (max-width: 600px)': {
     maxWidth: '100%',
     marginBottom: '0.75rem',
@@ -114,87 +134,33 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
 }));
 
 const LocationSelector = ({ onLocationSelect }) => {
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [touristPlaces, setTouristPlaces] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedPlace, setSelectedPlace] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  // Fetch states on component mount
-  useEffect(() => {
-    fetchStates();
-  }, []);
-
-  // Fetch cities when state changes
-  useEffect(() => {
-    if (selectedState) {
-      fetchCities(selectedState);
-      setSelectedCity('');
-      setSelectedPlace('');
-      setTouristPlaces([]);
-    }
-  }, [selectedState]);
-
-  // Fetch tourist places when city changes
-  useEffect(() => {
-    if (selectedCity) {
-      const city = cities.find(c => c.id === selectedCity);
-      if (city) {
-        fetchTouristPlaces(city.name);
-        setSelectedPlace('');
-      }
-    }
-  }, [selectedCity, cities]);
-
-  const fetchStates = () => {
-    setStates(indianStates);
-  };
-
-  const fetchCities = async (stateId) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${API_URL}/locations/cities/${stateId}`);
-      setCities(response.data);
-    } catch (error) {
-      console.error('Error fetching cities:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchTouristPlaces = async (cityName) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${API_URL}/locations/tourist-places/${cityName}`);
-      setTouristPlaces(response.data.places || []);
-    } catch (error) {
-      console.error('Error fetching tourist places:', error);
-      setTouristPlaces([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleStateChange = (event) => {
-    setSelectedState(event.target.value);
-  };
 
   const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
-  };
-
-  const handlePlaceChange = (event) => {
-    setSelectedPlace(event.target.value);
+    const cityName = event.target.value;
+    setSelectedCity(cityName);
+    setSelectedPlace('');
     if (onLocationSelect) {
       onLocationSelect({
-        state: selectedState,
-        city: selectedCity,
-        place: event.target.value
+        city: cityName,
+        place: ''
       });
     }
   };
+
+  const handlePlaceChange = (event) => {
+    const place = event.target.value;
+    setSelectedPlace(place);
+    if (onLocationSelect) {
+      onLocationSelect({
+        city: selectedCity,
+        place: place
+      });
+    }
+  };
+
+  const selectedCityData = famousCities.find(city => city.name === selectedCity);
 
   return (
     <Box sx={{
@@ -206,62 +172,42 @@ const LocationSelector = ({ onLocationSelect }) => {
       px: { xs: 2, sm: 3, md: 4 },
       width: '100%',
     }}>
-      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 } }}>
-        <InputLabel>State</InputLabel>
-        <StyledSelect
-          value={selectedState}
-          label="State"
-          onChange={handleStateChange}
-          disabled={loading}
-          MenuProps={menuProps}
-        >
-          {states.map((state) => (
-            <StyledMenuItem key={state} value={state}>
-              {state}
-            </StyledMenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 } }}>
-        <InputLabel>City</InputLabel>
+      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 }, '& .MuiInputLabel-root': { color: '#8B0000' } }}>
+        <InputLabel>Famous Cities</InputLabel>
         <StyledSelect
           value={selectedCity}
-          label="City"
+          label="Famous Cities"
           onChange={handleCityChange}
-          disabled={!selectedState || loading}
           MenuProps={menuProps}
         >
-          {cities.map((city) => (
-            <StyledMenuItem key={city.id} value={city.id}>
-              {city.name}
+          {famousCities.map((city) => (
+            <StyledMenuItem key={city.name} value={city.name}>
+              <Typography variant="body1" component="div" sx={{ fontWeight: 500, color: '#FFFFFF' }}>
+                {city.name}
+              </Typography>
             </StyledMenuItem>
           ))}
-        </Select>
-      </FormControl>
+        </StyledSelect>
+      </StyledFormControl>
 
-      <StyledFormControl fullWidth>
-        <InputLabel>Tourist Place</InputLabel>
+      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 }, '& .MuiInputLabel-root': { color: '#8B0000' } }}>
+        <InputLabel>Tourist Places</InputLabel>
         <StyledSelect
           value={selectedPlace}
-          label="Tourist Place"
+          label="Tourist Places"
           onChange={handlePlaceChange}
-          disabled={!selectedCity || loading}
+          disabled={!selectedCity}
           MenuProps={menuProps}
         >
-          {touristPlaces.map((place, index) => (
-            <StyledMenuItem key={index} value={place.id}>
-              {place.name}
+          {selectedCityData?.touristPlaces.map((place) => (
+            <StyledMenuItem key={place} value={place}>
+              <Typography variant="body1" component="div">
+                {place}
+              </Typography>
             </StyledMenuItem>
           ))}
-        </Select>
-      </FormControl>
-
-      {loading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <CircularProgress />
-        </Box>
-      )}
+        </StyledSelect>
+      </StyledFormControl>
     </Box>
   );
 };
