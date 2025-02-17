@@ -21,10 +21,10 @@ const SliderContainer = styled(Box)`
 `;
 
 const SliderHeader = styled(Typography)`
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #fff;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -46,21 +46,6 @@ const CardsContainer = styled(motion.div)`
   }
 `;
 
-const Card = styled(motion.div)`
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-tap-highlight-color: transparent;
-  flex: 0 0 280px;
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  height: 360px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  pointer-events: none;
-`;
-
 const CardImage = styled('img')`
   user-select: none;
   -webkit-user-drag: none;
@@ -72,25 +57,51 @@ const CardImage = styled('img')`
   background-color: rgba(0, 0, 0, 0.1);
 `;
 
+const Card = styled(motion.div)`
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+  flex: 0 0 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    img {
+      transform: scale(1.05);
+    }
+  }
+`;
+
 const CardOverlay = styled(Box)`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2rem 1.5rem;
+  padding: 1rem;
   background: linear-gradient(to top, 
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
     transparent 100%
   );
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const CardTitle = styled(Typography)`
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const NavigationButton = styled(IconButton)`
@@ -126,43 +137,43 @@ const NavigationButton = styled(IconButton)`
 const propertyTypes = [
   {
     id: 1,
-    title: 'House Boat',
-    image: '/images/property type images/house boat.jpg'
+    title: 'Hotels',
+    image: '/images/property-types/hotels.jpg'
   },
   {
     id: 2,
-    title: 'Villa',
-    image: '/images/property type images/villa.jpg'
+    title: 'Holiday homes',
+    image: '/images/property-types/holiday-homes.jpg'
   },
   {
     id: 3,
-    title: 'Apartment',
-    image: '/images/property type images/apartment.jpg'
+    title: 'Resorts',
+    image: '/images/property-types/resorts.jpg'
   },
   {
     id: 4,
-    title: 'Spa',
-    image: '/images/property type images/spa.jpg'
+    title: 'Villas',
+    image: '/images/property-types/villas.jpg'
   },
   {
     id: 5,
-    title: 'Resort',
-    image: '/images/property type images/resort.jpg'
+    title: 'Apartments',
+    image: '/images/property-types/apartments.jpg'
   },
   {
     id: 6,
-    title: 'Family Friendly',
-    image: '/images/property type images/family friendly.jpg'
+    title: 'Guest houses',
+    image: '/images/property-types/guest-houses.jpg'
   },
   {
     id: 7,
-    title: 'Hot Tub',
-    image: '/images/property type images/hot tub.jpg'
+    title: 'Cottages',
+    image: '/images/property-types/cottages.jpg'
   },
   {
     id: 8,
-    title: 'Water Park',
-    image: '/images/property type images/water park.jpg'
+    title: 'Hostels',
+    image: '/images/property-types/hostels.jpg'
   }
 ];
 
@@ -180,7 +191,7 @@ const PropertyTypeSlider = () => {
 
   const scroll = (direction) => {
     const container = containerRef.current;
-    const cardWidth = 280 + 24; // card width + gap
+    const cardWidth = 220 + 24; // card width + gap
     if (container) {
       container.scrollBy({
         left: direction === 'left' ? -cardWidth : cardWidth,
@@ -240,11 +251,11 @@ const PropertyTypeSlider = () => {
               as={motion.img}
               src={type.image}
               alt={type.title}
-
               loading="eager"
+              onLoad={() => console.log(`Successfully loaded: ${type.image}`)}
               onError={(e) => {
                 console.error(`Error loading image: ${type.image}`);
-                e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+                e.target.src = `https://via.placeholder.com/220x280/1a1a1a/ffffff?text=${type.title}`;
               }}
             />
             <CardOverlay>

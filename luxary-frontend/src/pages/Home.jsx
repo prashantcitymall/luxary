@@ -11,7 +11,7 @@ import Contact from '../components/Contact/Contact';
 import Footer from '../components/Footer/Footer';
 
 const VideoBackground = styled('video')`
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   min-width: 100%;
@@ -108,7 +108,6 @@ const LoadingSpinner = styled(Box)`
 `;
 
 const ContentSection = styled(Box)`
-  background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
   color: white;
   scroll-behavior: smooth;
   overflow-y: auto;
@@ -116,6 +115,23 @@ const ContentSection = styled(Box)`
   padding: 4rem 0 0;
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+  }
+  
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
   
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;
@@ -143,10 +159,10 @@ const Home = () => {
 
   return (
     <Box sx={{ overflowX: 'hidden', touchAction: 'pan-y pinch-zoom', overscrollBehavior: 'none' }}>
+      <VideoBackground autoPlay muted loop playsInline>
+        <source src="/video/video 2.mp4" type="video/mp4" />
+      </VideoBackground>
       <HeroSection>
-        <VideoBackground autoPlay muted loop playsInline>
-          <source src="/video/video 2.mp4" type="video/mp4" />
-        </VideoBackground>
         <ContentWrapper maxWidth="xl">
           <MainContent>
             <SearchForm />
