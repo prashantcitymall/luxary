@@ -28,6 +28,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const GuestInput = styled(TextField)`
+  transform: scale(0.90);
+  transform-origin: center;
   & .MuiOutlinedInput-root {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.1);
@@ -72,9 +74,9 @@ const GuestInput = styled(TextField)`
 `;
 
 const GuestDropdown = styled(Paper)`
-  padding: 16px;
-  width: 300px;
-  max-width: 100%;
+  padding: 14px;
+  width: 270px;
+  max-width: 90%;
   background: rgba(23, 25, 35, 0.95);
   backdrop-filter: blur(15px);
   border-radius: 20px;
@@ -97,8 +99,10 @@ const CounterButton = styled(IconButton)`
 `;
 
 const StyledPaper = styled(Paper)`
-  padding: 2rem;
+  padding: 1.8rem;
   background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.90);
+  transform-origin: center;
   backdrop-filter: blur(25px);
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -166,10 +170,10 @@ const LocationInput = styled(TextField)`
 `;
 
 const LocationDropdown = styled(Paper)`
-  padding: 8px 0;
-  width: 300px;
-  max-width: 100%;
-  max-height: 400px;
+  padding: 7.2px 0;
+  width: 270px;
+  max-width: 90%;
+  max-height: 360px;
   overflow-y: auto;
   background: rgba(23, 25, 35, 0.95);
   backdrop-filter: blur(15px);

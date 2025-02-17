@@ -10,6 +10,11 @@ const OuterContainer = styled(Box)`
   overflow: hidden;
   touch-action: pan-y pinch-zoom;
   margin-top: 2rem;
+  padding: 0 1rem;
+  
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+  }
 `;
 
 const SliderContainer = styled(Box)`
@@ -26,6 +31,11 @@ const SliderHeader = styled(Typography)`
   color: #fff;
   margin-bottom: 1.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const CardsContainer = styled(motion.div)`
@@ -72,10 +82,29 @@ const Card = styled(motion.div)`
   cursor: pointer;
   transition: transform 0.3s ease;
   
+  @media (max-width: 600px) {
+    flex: 0 0 180px;
+    height: 240px;
+  }
+  
+  @media (max-width: 400px) {
+    flex: 0 0 160px;
+    height: 220px;
+  }
+  
   &:hover {
     transform: translateY(-5px);
     img {
       transform: scale(1.05);
+    }
+  }
+  
+  @media (hover: none) {
+    &:hover {
+      transform: none;
+      img {
+        transform: none;
+      }
     }
   }
 `;
@@ -102,6 +131,10 @@ const CardTitle = styled(Typography)`
   font-weight: 600;
   margin: 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const NavigationButton = styled(IconButton)`
@@ -129,6 +162,26 @@ const NavigationButton = styled(IconButton)`
 
   svg {
     font-size: 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    padding: 1rem;
+    
+    &.prev {
+      left: -0.5rem;
+    }
+
+    &.next {
+      right: -0.5rem;
+    }
+    
+    svg {
+      font-size: 1.25rem;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    display: none;
   }
 `;
 

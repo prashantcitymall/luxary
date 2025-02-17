@@ -50,6 +50,10 @@ const StyledSelect = styled(Select)(({ theme }) => ({
     backgroundColor: 'transparent',
     color: 'white',
     padding: '10px 15px',
+    '@media (max-width: 600px)': {
+      padding: '8px 12px',
+      fontSize: '0.875rem',
+    },
   },
   '& .MuiOutlinedInput-notchedOutline': {
     border: '1px solid rgba(255, 255, 255, 0.3)',
@@ -62,6 +66,9 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   },
   '& .MuiSelect-icon': {
     color: 'white',
+    '@media (max-width: 600px)': {
+      fontSize: '1.25rem',
+    },
   },
 }));
 
@@ -69,6 +76,10 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   backgroundColor: 'transparent !important',
   color: 'white !important',
   padding: '10px 15px',
+  '@media (max-width: 600px)': {
+    padding: '8px 12px',
+    fontSize: '0.875rem',
+  },
   '&:hover': {
     backgroundColor: 'rgba(255, 255, 255, 0.1) !important',
   },
@@ -82,10 +93,19 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
   marginBottom: '1rem',
+  width: '100%',
+  maxWidth: '400px',
+  '@media (max-width: 600px)': {
+    maxWidth: '100%',
+    marginBottom: '0.75rem',
+  },
   '& .MuiInputLabel-root': {
     color: 'rgba(255, 255, 255, 0.7)',
     '&.Mui-focused': {
       color: 'rgba(255, 255, 255, 0.9)',
+    },
+    '@media (max-width: 600px)': {
+      fontSize: '0.875rem',
     },
   },
   '& .MuiOutlinedInput-root': {
@@ -177,8 +197,16 @@ const LocationSelector = ({ onLocationSelect }) => {
   };
 
   return (
-    <Box sx={{ minWidth: 120, mt: 2 }}>
-      <StyledFormControl fullWidth sx={{ mb: 2 }}>
+    <Box sx={{
+      minWidth: 120,
+      mt: 2,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      px: { xs: 2, sm: 3, md: 4 },
+      width: '100%',
+    }}>
+      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 } }}>
         <InputLabel>State</InputLabel>
         <StyledSelect
           value={selectedState}
@@ -195,7 +223,7 @@ const LocationSelector = ({ onLocationSelect }) => {
         </Select>
       </FormControl>
 
-      <StyledFormControl fullWidth sx={{ mb: 2 }}>
+      <StyledFormControl sx={{ mb: { xs: 1.5, sm: 2 } }}>
         <InputLabel>City</InputLabel>
         <StyledSelect
           value={selectedCity}

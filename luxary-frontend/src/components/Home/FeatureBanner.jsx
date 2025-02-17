@@ -6,39 +6,22 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const BannerContainer = styled(Box)`
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, #F90C71, #30001A);
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 2rem;
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: -5vh;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, 
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    z-index: 0;
-  }
+  z-index: 1;
 `;
 
 const FeatureCard = styled(motion.div)`
   flex: 1;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
+  background: linear-gradient(135deg, #F90C71, #30001A);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -46,25 +29,11 @@ const FeatureCard = styled(motion.div)`
   gap: 1rem;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.1) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::before {
-    opacity: 1;
+  &:hover {
+    transform: translateY(-5px);
   }
 `;
 
@@ -146,7 +115,7 @@ const FeatureBanner = () => {
       {features.map((feature, index) => (
         <FeatureCard
           key={index}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
           whileHover={{ 

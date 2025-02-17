@@ -7,35 +7,16 @@ import SearchForm from '../components/SearchForm/SearchForm';
 // Import components directly to ensure they exist
 import FeatureBanner from '../components/Home/FeatureBanner';
 import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
+import TouristPlacesSection from '../components/TouristPlaces/TouristPlacesSection';
 import Contact from '../components/Contact/Contact';
 import Footer from '../components/Footer/Footer';
 
-const VideoBackground = styled('video')`
-  position: fixed;
-  right: 0;
-  top: 0;
-  min-width: 100%;
-  min-height: 100%;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  object-fit: cover;
-`;
+
 
 const HeroSection = styled(Box)`
   min-height: 100vh;
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
-    z-index: 0;
-  }
+  background: linear-gradient(135deg, #F90C71, #30001A);
 `;
 
 
@@ -49,6 +30,7 @@ const PageContainer = styled(Box)`
   right: 0;
   bottom: 0;
   overscroll-behavior: none;
+  background: linear-gradient(135deg, #F90C71, #30001A);
 `;
 
 const ContentWrapper = styled(Container)`
@@ -63,6 +45,12 @@ const ContentWrapper = styled(Container)`
   height: 100%;
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
+  
+  @media (max-width: 600px) {
+    padding-top: 64px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `;
 
 const MainContent = styled(Box)`
@@ -71,12 +59,32 @@ const MainContent = styled(Box)`
   justify-content: space-between;
   gap: 2rem;
   margin-bottom: 2rem;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const SloganWrapper = styled(Box)`
   flex: 1;
   max-width: 600px;
   padding: 2rem;
+  
+  @media (max-width: 900px) {
+    max-width: 100%;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 const SloganText = styled(motion.div)`
@@ -92,6 +100,22 @@ const SloganText = styled(motion.div)`
     background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    
+    @media (max-width: 1200px) {
+      font-size: 3.5rem;
+    }
+    
+    @media (max-width: 900px) {
+      font-size: 3rem;
+    }
+    
+    @media (max-width: 600px) {
+      font-size: 2.5rem;
+    }
+    
+    @media (max-width: 400px) {
+      font-size: 2rem;
+    }
   }
   
   .highlight {
@@ -116,17 +140,7 @@ const ContentSection = styled(Box)`
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 0;
-  }
+  background: linear-gradient(135deg, #F90C71, #30001A);
   
   & > * {
     position: relative;
@@ -159,9 +173,6 @@ const Home = () => {
 
   return (
     <Box sx={{ overflowX: 'hidden', touchAction: 'pan-y pinch-zoom', overscrollBehavior: 'none' }}>
-      <VideoBackground autoPlay muted loop playsInline>
-        <source src="/video/video 2.mp4" type="video/mp4" />
-      </VideoBackground>
       <HeroSection>
         <ContentWrapper maxWidth="xl">
           <MainContent>
@@ -214,11 +225,18 @@ const Home = () => {
                   <PropertyTypeSlider />
                 </motion.div>
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                  <Box sx={{ mt: -4 }}>
+                  <TouristPlacesSection />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                  <Box sx={{ mt: 4 }}>
                     <Contact />
                   </Box>
                 </motion.div>
