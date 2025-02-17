@@ -16,7 +16,7 @@ import Footer from '../components/Footer/Footer';
 const HeroSection = styled(Box)`
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
 `;
 
 
@@ -30,7 +30,7 @@ const PageContainer = styled(Box)`
   right: 0;
   bottom: 0;
   overscroll-behavior: none;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
 `;
 
 const ContentWrapper = styled(Container)`
@@ -140,7 +140,7 @@ const ContentSection = styled(Box)`
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
   position: relative;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
   
   & > * {
     position: relative;

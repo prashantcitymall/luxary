@@ -10,7 +10,7 @@ export const states = [
           {
             id: 'cellular-jail',
             name: 'Cellular Jail',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Cellular_Jail%2C_Port_Blair.jpg',
             shortDescription: 'Historic colonial prison.',
             description: 'Colonial prison that held many Indian freedom fighters.',
             visitingHours: '9:00 AM - 5:00 PM',
@@ -21,7 +21,7 @@ export const states = [
           {
             id: 'ross-island',
             name: 'Ross Island',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Ross_Island%2C_Port_Blair.jpg',
             shortDescription: 'Historic British administrative headquarters.',
             description: 'Former British administrative center with historic ruins.',
             visitingHours: '8:30 AM - 4:00 PM',
@@ -38,7 +38,7 @@ export const states = [
           {
             id: 'radhanagar-beach',
             name: 'Radhanagar Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Radhanagar_Beach%2C_Havelock_Island.jpg',
             shortDescription: 'Asia\'s best beach.',
             description: 'White sand beach with crystal clear waters.',
             visitingHours: 'Sunrise to Sunset',
@@ -49,7 +49,7 @@ export const states = [
           {
             id: 'elephant-beach',
             name: 'Elephant Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
             shortDescription: 'Popular for water sports.',
             description: 'Beautiful coral reef and water sports activities.',
             visitingHours: '9:00 AM - 4:00 PM',
@@ -72,7 +72,7 @@ export const states = [
           {
             id: 'agatti-beach',
             name: 'Agatti Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Beautiful lagoon and coral reefs.',
             description: 'Gateway to Lakshadweep, known for its pristine beaches.',
             visitingHours: 'Sunrise to Sunset',
@@ -89,7 +89,7 @@ export const states = [
           {
             id: 'kavaratti-beach',
             name: 'Kavaratti Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5',
             shortDescription: 'Capital of Lakshadweep.',
             description: 'Beautiful beaches and water sports activities.',
             visitingHours: 'Sunrise to Sunset',
@@ -100,7 +100,7 @@ export const states = [
           {
             id: 'ujra-mosque',
             name: 'Ujra Mosque',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5',
             shortDescription: 'Historic mosque with unique architecture.',
             description: 'Beautiful white mosque with ornate ceilings.',
             visitingHours: 'Prayer times',
@@ -134,7 +134,7 @@ export const states = [
           {
             id: 'agra-fort',
             name: 'Agra Fort',
-            image: 'https://images.unsplash.com/photo-1589308454676-22c9af2a0e91',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Agra_03-2016_10_Agra_Fort.jpg',
             shortDescription: 'UNESCO World Heritage site, showcasing Mughal architecture.',
             description: 'Agra Fort is a historical fort in the city of Agra.',
             visitingHours: '6:00 AM - 6:00 PM',
@@ -145,7 +145,7 @@ export const states = [
           {
             id: 'fatehpur-sikri',
             name: 'Fatehpur Sikri',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Fatehpur_sikri_buland_darwaza.jpg',
             shortDescription: 'A city of architectural grandeur from Mughal era.',
             description: 'Fatehpur Sikri was built in the 16th century by Emperor Akbar.',
             visitingHours: 'Sunrise to Sunset',
@@ -162,7 +162,7 @@ export const states = [
           {
             id: 'bara-imambara',
             name: 'Bara Imambara',
-            image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Bara_Imambara_Lucknow.jpg',
             shortDescription: 'Historical monument known for its unique architecture.',
             description: 'Bara Imambara is an imambara complex in Lucknow built by Asaf-ud-Daula.',
             visitingHours: '6:00 AM - 5:00 PM',
@@ -190,7 +190,7 @@ export const states = [
           {
             id: 'kashi-vishwanath',
             name: 'Kashi Vishwanath Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1624808868251-9409a9d56ed8',
             shortDescription: 'One of the most famous Hindu temples.',
             description: 'Ancient temple dedicated to Lord Shiva, one of the twelve Jyotirlingas.',
             visitingHours: '3:00 AM - 11:00 PM',
@@ -201,7 +201,7 @@ export const states = [
           {
             id: 'sarnath',
             name: 'Sarnath',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Dhamekh_Stupa%2C_Sarnath.jpg',
             shortDescription: 'Buddhist pilgrimage site.',
             description: 'Site where Buddha gave his first sermon after enlightenment.',
             visitingHours: 'Sunrise to Sunset',
@@ -218,7 +218,7 @@ export const states = [
           {
             id: 'triveni-sangam',
             name: 'Triveni Sangam',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/3/30/Triveni_sangam_aerial_view.jpg',
             shortDescription: 'Holy confluence of three rivers.',
             description: 'Sacred confluence of the Ganges, Yamuna and mythical Saraswati rivers.',
             visitingHours: 'Open 24 hours',
@@ -229,7 +229,7 @@ export const states = [
           {
             id: 'anand-bhavan',
             name: 'Anand Bhavan',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Anand_Bhavan%2C_Allahabad.jpg',
             shortDescription: 'Historic house museum of the Nehru family.',
             description: 'Former residence of the Nehru family, now converted into a museum.',
             visitingHours: '9:30 AM - 5:00 PM',
@@ -240,7 +240,7 @@ export const states = [
           {
             id: 'allahabad-fort',
             name: 'Allahabad Fort',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Allahabad_Fort_aka_Banaras_Fort.jpg',
             shortDescription: 'Massive fort built by Emperor Akbar.',
             description: 'Historic fort at the confluence of rivers Ganges and Yamuna.',
             visitingHours: '10:00 AM - 5:00 PM',
@@ -257,7 +257,7 @@ export const states = [
           {
             id: 'krishna-janmabhoomi',
             name: 'Krishna Janmabhoomi Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1623604747843-ee4f00e8e275',
             shortDescription: 'Birthplace of Lord Krishna.',
             description: 'Ancient temple marking the birthplace of Lord Krishna.',
             visitingHours: '5:30 AM - 12:00 PM, 4:00 PM - 9:00 PM',
@@ -268,7 +268,7 @@ export const states = [
           {
             id: 'dwarkadhish-temple',
             name: 'Dwarkadhish Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/5/55/Dwarkadhish_temple%2C_Mathura.jpg',
             shortDescription: 'Famous temple dedicated to Lord Krishna.',
             description: 'Ornate temple known for its architecture and religious significance.',
             visitingHours: '5:30 AM - 12:00 PM, 4:00 PM - 9:00 PM',
@@ -279,7 +279,7 @@ export const states = [
           {
             id: 'vishram-ghat',
             name: 'Vishram Ghat',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Vishram_Ghat%2C_Mathura.jpg',
             shortDescription: 'Sacred bathing ghat on Yamuna River.',
             description: 'Main ghat where Lord Krishna is said to have rested after killing Kansa.',
             visitingHours: 'Open 24 hours',
@@ -302,7 +302,7 @@ export const states = [
           {
             id: 'har-ki-pauri',
             name: 'Har Ki Pauri',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Har_Ki_Pauri%2C_Haridwar.jpg',
             shortDescription: 'Sacred ghat on the banks of the Ganges.',
             description: 'Famous ghat where the evening aarti is performed.',
             visitingHours: 'Open 24 hours',
@@ -319,7 +319,7 @@ export const states = [
           {
             id: 'robbers-cave',
             name: 'Robbers Cave',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Robber%27s_Cave%2C_Dehradun.jpg',
             shortDescription: 'A unique natural cave formation with a disappearing river.',
             description: 'Also known as Guchhupani, this 600-meter-long cave is a popular tourist spot.',
             visitingHours: '7:00 AM - 6:00 PM',
@@ -330,7 +330,7 @@ export const states = [
           {
             id: 'mindrolling-monastery',
             name: 'Mindrolling Monastery',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Mindrolling_Monastery.jpg',
             shortDescription: 'Largest Buddhist center in India.',
             description: 'Famous for its 220-foot-high Great Stupa of enlightenment.',
             visitingHours: '9:00 AM - 7:00 PM',
@@ -341,7 +341,7 @@ export const states = [
           {
             id: 'tapkeshwar-temple',
             name: 'Tapkeshwar Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Tapkeshwar_Temple.jpg',
             shortDescription: 'Ancient cave temple dedicated to Lord Shiva.',
             description: 'Natural cave temple with water droplets falling on the Shivling.',
             visitingHours: '6:00 AM - 8:00 PM',
@@ -358,7 +358,7 @@ export const states = [
           {
             id: 'kempty-falls',
             name: 'Kempty Falls',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Kempty_falls_mussoorie.jpg',
             shortDescription: 'Magnificent waterfall surrounded by mountain views.',
             description: 'One of the biggest waterfalls in Uttarakhand, cascading from a height of 40 feet.',
             visitingHours: '8:00 AM - 5:00 PM',
@@ -369,7 +369,7 @@ export const states = [
           {
             id: 'mall-road-mussoorie',
             name: 'Mall Road',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Mall_Road%2C_Mussoorie.jpg',
             shortDescription: 'Heart of Mussoorie with shops and eateries.',
             description: 'The main shopping street of Mussoorie with various shops, cafes, and restaurants.',
             visitingHours: '9:00 AM - 10:00 PM',
@@ -380,7 +380,7 @@ export const states = [
           {
             id: 'gun-hill',
             name: 'Gun Hill',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Gun_Hill%2C_Mussoorie.jpg',
             shortDescription: 'Second highest point in Mussoorie.',
             description: 'Accessible by cable car, offering panoramic views of the Himalayas.',
             visitingHours: '10:00 AM - 7:00 PM',
@@ -397,7 +397,7 @@ export const states = [
           {
             id: 'naini-lake',
             name: 'Naini Lake',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Naini_Lake_from_Nainital.jpg',
             shortDescription: 'Heart-shaped lake surrounded by mountains.',
             description: 'The centerpiece of Nainital, offering boating and beautiful views.',
             visitingHours: '6:00 AM - 6:00 PM',
@@ -408,7 +408,7 @@ export const states = [
           {
             id: 'snow-view-point',
             name: 'Snow View Point',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Panoramic view point of the Himalayas.',
             description: 'Offers stunning views of snow-capped Himalayan peaks.',
             visitingHours: '10:00 AM - 5:00 PM',
@@ -419,7 +419,7 @@ export const states = [
           {
             id: 'mall-road-nainital',
             name: 'Mall Road',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'Main shopping street of Nainital.',
             description: 'Bustling street with shops, restaurants, and hotels.',
             visitingHours: '9:00 AM - 10:00 PM',
@@ -436,7 +436,7 @@ export const states = [
           {
             id: 'badrinath-temple',
             name: 'Badrinath Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1626011951033-4c41b2929011',
             shortDescription: 'Ancient temple dedicated to Lord Vishnu.',
             description: 'One of the Char Dhams, this sacred temple is located in the Garhwal hills.',
             visitingHours: '4:30 AM - 9:00 PM',
@@ -453,7 +453,7 @@ export const states = [
           {
             id: 'kedarnath-temple',
             name: 'Kedarnath Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Ancient Shiva temple in the Himalayas.',
             description: 'One of the holiest Hindu temples dedicated to Lord Shiva.',
             visitingHours: '4:00 AM - 9:00 PM',
@@ -487,7 +487,7 @@ export const states = [
           {
             id: 'amber-fort',
             name: 'Amber Fort',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1598874399429-fa7f3d3c7faa',
             shortDescription: 'Magnificent fort overlooking Maota Lake.',
             description: 'UNESCO World Heritage site known for its artistic Hindu style elements.',
             visitingHours: '8:00 AM - 5:30 PM',
@@ -498,7 +498,7 @@ export const states = [
           {
             id: 'city-palace-jaipur',
             name: 'City Palace',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1524413840625-35e5dfc6d5cb',
             shortDescription: 'Royal residence and museum in the heart of Jaipur.',
             description: 'Complex of courtyards, gardens, and buildings blending Rajasthani and Mughal architecture.',
             visitingHours: '9:30 AM - 5:00 PM',
@@ -526,7 +526,7 @@ export const states = [
           {
             id: 'city-palace',
             name: 'City Palace',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1592639296346-560c37a0f259',
             shortDescription: 'Magnificent palace complex on Lake Pichola.',
             description: 'The largest palace complex in Rajasthan, featuring stunning architecture and museums.',
             visitingHours: '9:30 AM - 5:30 PM',
@@ -537,7 +537,7 @@ export const states = [
           {
             id: 'lake-pichola',
             name: 'Lake Pichola',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1590686349135-1b7b81045877',
             shortDescription: 'Artificial fresh water lake with palace views.',
             description: 'Created in 1362 AD, this lake is surrounded by palaces, temples, and bathing ghats.',
             visitingHours: 'Boat rides: 10:00 AM - 6:00 PM',
@@ -548,7 +548,7 @@ export const states = [
           {
             id: 'jagdish-temple',
             name: 'Jagdish Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1580294647332-8a399cd9ed6c',
             shortDescription: 'Indo-Aryan style temple dedicated to Lord Vishnu.',
             description: 'Built in 1651, the temple is a prime example of Maru-Gurjar architecture.',
             visitingHours: '4:30 AM - 10:00 PM',
@@ -559,7 +559,7 @@ export const states = [
           {
             id: 'saheliyon-ki-bari',
             name: 'Saheliyon Ki Bari',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582457601528-787c00379708',
             shortDescription: 'Garden of the Maidens.',
             description: 'Beautiful garden with fountains, kiosks, marble elephants, and lotus pool.',
             visitingHours: '9:00 AM - 7:00 PM',
@@ -582,7 +582,7 @@ export const states = [
           {
             id: 'sabarmati-ashram',
             name: 'Sabarmati Ashram',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1589308454676-22c9ff2875c4',
             shortDescription: 'Home of Mahatma Gandhi from 1917 to 1930.',
             description: 'Historic ashram that served as one of the main centres of the Indian freedom struggle.',
             visitingHours: '8:30 AM - 6:30 PM',
@@ -593,7 +593,7 @@ export const states = [
           {
             id: 'adalaj-stepwell',
             name: 'Adalaj Stepwell',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1590686349135-1b7b81045877',
             shortDescription: 'Five-story stepwell with intricate carvings.',
             description: 'Historic stepwell built in 1498 with beautiful Indo-Islamic architecture.',
             visitingHours: '6:00 AM - 6:00 PM',
@@ -610,7 +610,7 @@ export const states = [
           {
             id: 'dwarkadhish-temple-dwarka',
             name: 'Dwarkadhish Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1627894006066-b45aa1e511f4',
             shortDescription: 'Ancient temple dedicated to Lord Krishna.',
             description: 'One of the four main pilgrimages (Char Dham) of Hindu faith.',
             visitingHours: '6:00 AM - 1:00 PM, 5:00 PM - 9:30 PM',
@@ -621,7 +621,7 @@ export const states = [
           {
             id: 'beyt-dwarka',
             name: 'Beyt Dwarka',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Island with ancient Krishna temple.',
             description: 'Island temple accessible by boat, believed to be Krishna\'s residence.',
             visitingHours: '6:00 AM - 9:00 PM',
@@ -638,7 +638,7 @@ export const states = [
           {
             id: 'gir-national-park',
             name: 'Gir Forest',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1575526515796-c2f1de448e48',
             shortDescription: 'Only home of Asiatic Lions.',
             description: 'Last remaining natural habitat of Asiatic Lions in the world.',
             visitingHours: '6:00 AM - 5:00 PM',
@@ -649,7 +649,7 @@ export const states = [
           {
             id: 'devaliya-park',
             name: 'Devaliya Safari Park',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582457601528-787c00379708',
             shortDescription: 'Interpretation zone of Gir.',
             description: 'Enclosed area offering guaranteed lion sightings.',
             visitingHours: '8:00 AM - 4:00 PM',
@@ -672,7 +672,7 @@ export const states = [
           {
             id: 'tea-gardens',
             name: 'Tea Gardens',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1598089842345-111cc13e5ece',
             shortDescription: 'Vast expanses of tea plantations.',
             description: 'Rolling hills covered with tea plantations and cool mountain air.',
             visitingHours: 'Daylight hours',
@@ -695,7 +695,7 @@ export const states = [
           {
             id: 'calangute-beach',
             name: 'Calangute Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1581688669862-cf00ff31e215',
             shortDescription: 'Queen of Beaches in Goa.',
             description: 'One of the largest and most popular beaches in North Goa.',
             visitingHours: 'Open 24 hours',
@@ -706,7 +706,7 @@ export const states = [
           {
             id: 'baga-beach',
             name: 'Baga Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2',
             shortDescription: 'Famous for nightlife and water sports.',
             description: 'Popular beach known for its vibrant nightlife and water activities.',
             visitingHours: 'Open 24 hours',
@@ -717,7 +717,7 @@ export const states = [
           {
             id: 'aguada-fort',
             name: 'Fort Aguada',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1590686349135-1b7b81045877',
             shortDescription: '17th-century Portuguese fort and lighthouse.',
             description: 'Well-preserved Portuguese fort offering panoramic views of the Arabian Sea.',
             visitingHours: '9:30 AM - 6:00 PM',
@@ -728,7 +728,7 @@ export const states = [
           {
             id: 'anjuna-beach',
             name: 'Anjuna Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1584553421349-3557471bed79',
             shortDescription: 'Famous for its Wednesday flea market.',
             description: 'Rocky beach known for its hippie culture and famous flea market.',
             visitingHours: 'Open 24 hours, Flea Market: Wednesdays',
@@ -739,7 +739,7 @@ export const states = [
           {
             id: 'chapora-fort',
             name: 'Chapora Fort',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5',
             shortDescription: 'Ancient fort with panoramic views.',
             description: 'Red-laterite bastion that offers stunning views of the surrounding beaches.',
             visitingHours: '9:30 AM - 5:30 PM',
@@ -756,7 +756,7 @@ export const states = [
           {
             id: 'palolem-beach',
             name: 'Palolem Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1581688669862-cf00ff31e215',
             shortDescription: 'Pristine crescent beach with calm waters.',
             description: 'One of the most beautiful beaches in South Goa, perfect for swimming.',
             visitingHours: 'Open 24 hours',
@@ -767,7 +767,7 @@ export const states = [
           {
             id: 'colva-beach',
             name: 'Colva Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2',
             shortDescription: 'Longest beach in South Goa.',
             description: 'Beautiful white sand beach stretching for about 2.4 kilometers.',
             visitingHours: 'Open 24 hours',
@@ -778,7 +778,7 @@ export const states = [
           {
             id: 'cabo-de-rama-fort',
             name: 'Cabo de Rama Fort',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1590686349135-1b7b81045877',
             shortDescription: 'Ancient fort with stunning sea views.',
             description: 'Historic fort offering panoramic views of the Arabian Sea and surrounding areas.',
             visitingHours: '9:00 AM - 5:30 PM',
@@ -789,7 +789,7 @@ export const states = [
           {
             id: 'benaulim-beach',
             name: 'Benaulim Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1584553421349-3557471bed79',
             shortDescription: 'Peaceful beach known for fishing activities.',
             description: 'Quiet beach famous for its fishing activities and water sports.',
             visitingHours: 'Open 24 hours',
@@ -800,7 +800,7 @@ export const states = [
           {
             id: 'agonda-beach',
             name: 'Agonda Beach',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5',
             shortDescription: 'Secluded beach perfect for relaxation.',
             description: 'Less crowded beach known for its pristine beauty and tranquility.',
             visitingHours: 'Open 24 hours',
@@ -823,7 +823,7 @@ export const states = [
           {
             id: 'mall-road',
             name: 'Mall Road',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'Heart of Shimla, famous for shopping and architecture.',
             description: 'Historic street with colonial architecture and modern shops.',
             visitingHours: 'Open 24 hours',
@@ -834,7 +834,7 @@ export const states = [
           {
             id: 'ridge',
             name: 'The Ridge',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'Large open space in the heart of Shimla.',
             description: 'Center of Shimla\'s cultural activities with panoramic views.',
             visitingHours: 'Open 24 hours',
@@ -851,7 +851,7 @@ export const states = [
           {
             id: 'hadimba-temple',
             name: 'Hadimba Temple',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1626011951033-4c41b2929011',
             shortDescription: 'Ancient cave temple in cedar forest.',
             description: 'Pagoda-style temple dedicated to Goddess Hadimba.',
             visitingHours: '8:00 AM - 6:00 PM',
@@ -862,7 +862,7 @@ export const states = [
           {
             id: 'solang-valley',
             name: 'Solang Valley',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Adventure sports paradise.',
             description: 'Famous for skiing in winter and paragliding in summer.',
             visitingHours: '9:00 AM - 5:00 PM',
@@ -873,7 +873,7 @@ export const states = [
           {
             id: 'rohtang-pass',
             name: 'Rohtang Pass',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'High mountain pass with snow views.',
             description: 'Popular tourist spot known for snow and scenic beauty.',
             visitingHours: '8:00 AM - 4:00 PM',
@@ -890,7 +890,7 @@ export const states = [
           {
             id: 'mcleodganj',
             name: 'McLeodganj',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Little Lhasa of India.',
             description: 'Home to Dalai Lama and Tibetan community.',
             visitingHours: 'Open 24 hours',
@@ -901,7 +901,7 @@ export const states = [
           {
             id: 'tsuglagkhang-complex',
             name: 'Tsuglagkhang Complex',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'Main Buddhist temple complex.',
             description: 'Residence of Dalai Lama and important Buddhist site.',
             visitingHours: '5:00 AM - 8:00 PM',
@@ -912,7 +912,7 @@ export const states = [
           {
             id: 'dharamshala-cricket-stadium',
             name: 'HPCA Cricket Stadium',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Most scenic cricket stadium.',
             description: 'International cricket stadium with Dhauladhar range backdrop.',
             visitingHours: '10:00 AM - 5:00 PM',
@@ -935,7 +935,7 @@ export const states = [
           {
             id: 'india-gate',
             name: 'India Gate',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1587475260584-136574528ed5',
             shortDescription: 'War memorial in the heart of Delhi.',
             description: 'Historic war memorial dedicated to soldiers who died in World War I.',
             visitingHours: 'Open 24 hours',
@@ -946,7 +946,7 @@ export const states = [
           {
             id: 'red-fort',
             name: 'Red Fort',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1585135497273-1a86b09fe70e',
             shortDescription: 'Historic fort complex built in red sandstone.',
             description: 'UNESCO World Heritage site and symbol of Indian independence.',
             visitingHours: '9:30 AM - 4:30 PM (Closed on Mondays)',
@@ -969,7 +969,7 @@ export const states = [
           {
             id: 'gateway-of-india',
             name: 'Gateway of India',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1570620744987-da7c77fa5376',
             shortDescription: 'Historic arch monument and iconic landmark.',
             description: 'Built in 20th century to commemorate the landing of King George V and Queen Mary.',
             visitingHours: 'Open 24 hours',
@@ -992,7 +992,7 @@ export const states = [
           {
             id: 'victoria-memorial',
             name: 'Victoria Memorial',
-            image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1',
+            image: 'https://images.unsplash.com/photo-1582531759791-374f1e5aa5de',
             shortDescription: 'Magnificent marble building and museum.',
             description: 'Large marble building built between 1906 and 1921 dedicated to Queen Victoria.',
             visitingHours: '10:00 AM - 5:00 PM (Closed on Mondays)',

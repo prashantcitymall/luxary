@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#F90C71',
+      main: '#f49e4c',
     },
     background: {
       default: 'transparent',
@@ -29,7 +29,7 @@ const theme = createTheme({
 const GradientWrapper = styled(Box)`
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
   position: fixed;
   top: 0;
   left: 0;
@@ -64,6 +64,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/list-property" element={<ListProperty />} />
+              <Route path="/tourist-places/:stateId/:cityId/:placeId" element={<TouristPlaceDetails />} />
             </Routes>
           </UserProvider>
         </LocalizationProvider>

@@ -26,7 +26,10 @@ import { states } from '../../data/touristPlaces';
 
 const SectionContainer = styled(Box)`
   padding: 4rem 0;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(rgba(244, 158, 76, 0.85), rgba(48, 0, 26, 0.85)), url('/images/tourist%20place%20.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
 `;
 
@@ -123,7 +126,7 @@ const TouristPlacesSection = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
   const handlePlaceClick = (stateId, cityId, placeId) => {
-    navigate(`/tourist-place/${stateId}/${cityId}/${placeId}`);
+    navigate(`/tourist-places/${stateId}/${cityId}/${placeId}`);
   };
 
   const handleStateChange = (event, newValue) => {

@@ -6,7 +6,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const BannerContainer = styled(Box)`
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 2rem;
@@ -21,7 +21,7 @@ const BannerContainer = styled(Box)`
 
 const FeatureCard = styled(motion.div)`
   flex: 1;
-  background: linear-gradient(135deg, #F90C71, #30001A);
+  background: linear-gradient(135deg, #f49e4c, #30001A);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
