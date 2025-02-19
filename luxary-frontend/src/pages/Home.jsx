@@ -3,6 +3,7 @@ import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
+import { useMode } from '../context/ModeContext';
 
 // Import components directly to ensure they exist
 import ToggleMode from '../components/Home/ToggleMode';
@@ -15,19 +16,17 @@ import Footer from '../components/Footer/Footer';
 const HeroSection = styled(Box)`
   min-height: 100vh;
   position: relative;
-  background: ${props => props.isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease;
 `;
 
 const PageContainer = styled(Box)`
   width: 100%;
   overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overscroll-behavior: none;
-  background: ${props => props.isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  position: relative;
+  min-height: 100vh;
+  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease;
 `;
 
 const ContentWrapper = styled(Container)`
@@ -36,12 +35,11 @@ const ContentWrapper = styled(Container)`
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  padding-top: 80px; // Account for fixed header
-  overflow-y: auto;
+  padding-top: 80px;
+  overflow-y: visible;
   overflow-x: hidden;
-  height: 100%;
-  overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
+  color: ${props => props.isManagerMode ? '#FFFFFF' : '#FFFFFF'};
   
   @media (max-width: 600px) {
     padding-top: 64px;
@@ -86,17 +84,17 @@ const SloganWrapper = styled(Box)`
 
 const SloganText = styled(motion.div)`
   font-family: 'Playfair Display', serif;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: ${props => props.isManagerMode ? '#FFFFFF' : 'white'};
+  text-shadow: ${props => props.isManagerMode ? '2px 2px 4px rgba(0, 0, 0, 0.3)' : '2px 2px 4px rgba(0, 0, 0, 0.3)'};
   
   h1 {
     font-size: 4rem;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: ${props => props.isManagerMode ? 'none' : 'linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8))'};
+    -webkit-background-clip: ${props => props.isManagerMode ? 'none' : 'text'};
+    -webkit-text-fill-color: ${props => props.isManagerMode ? '#FFFFFF' : 'transparent'};
     
     @media (max-width: 1200px) {
       font-size: 3.5rem;
@@ -129,15 +127,14 @@ const LoadingSpinner = styled(Box)`
 `;
 
 const ContentSection = styled(Box)`
-  color: white;
+  color: ${props => props.isManagerMode ? '#FFFFFF' : 'white'};
   scroll-behavior: smooth;
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
   padding: 4rem 0 0;
-  overscroll-behavior-x: none;
-  touch-action: pan-y pinch-zoom;
   position: relative;
-  background: linear-gradient(135deg, #f49e4c, #30001A);
+  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+  transition: background 0.3s ease;
   
   & > * {
     position: relative;
@@ -151,12 +148,8 @@ const ContentSection = styled(Box)`
 
 const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isManagerMode, setIsManagerMode] = React.useState(false);
-
-  React.useEffect(() => {
-    const savedMode = localStorage.getItem('userMode');
-    setIsManagerMode(savedMode === 'manager');
-  }, []);
+  const { mode, handleModeChange } = useMode();
+  const isManagerMode = mode === 'manager';
 
   React.useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -175,47 +168,56 @@ const Home = () => {
 
   return (
     <Box sx={{ 
-      overflowX: 'hidden', 
+      overflowX: 'hidden',
+      overflowY: 'auto', 
       touchAction: 'pan-y pinch-zoom', 
-      overscrollBehavior: 'none',
-      background: isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)',
+      minHeight: '100vh',
       transition: 'background 0.3s ease',
+      background: isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)',
     }}>
-      <HeroSection isManagerMode={isManagerMode}>
-        <ToggleMode onModeChange={setIsManagerMode} />
-        {/* Add a comment to ensure ToggleMode is rendered */}
-        <ContentWrapper maxWidth="xl">
+      <PageContainer isManagerMode={isManagerMode}>
+        <ContentWrapper isManagerMode={isManagerMode}>
           <MainContent>
             <SearchForm />
             <SloganWrapper>
-              <SloganText
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-              >
+              <SloganText isManagerMode={isManagerMode}>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
+                  transition={{ duration: 0.8 }}
                 >
-                  Luxury meets <span className="highlight">affordability</span> under one roof.
+                  {isManagerMode 
+                    ? "Manage Your Properties with Ease"
+                    : "Do not disturb 🚪 🤚"}
                 </motion.h1>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                >
-                  <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', mt: 2 }}>
-                    Discover comfort without compromise
-                  </Typography>
-                </motion.div>
+                {!isManagerMode && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <Typography variant="h5" sx={{ 
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      mt: 2,
+                      fontFamily: 'Playfair Display, serif',
+                      fontWeight: 500,
+                      fontSize: {
+                        xs: '1.5rem',
+                        sm: '1.8rem',
+                        md: '2rem'
+                      }
+                    }}>
+                      Embarking on a journey of peace, pampering, and pillow forts.
+                    </Typography>
+                  </motion.div>
+                )}
               </SloganText>
             </SloganWrapper>
           </MainContent>
         </ContentWrapper>
-      </HeroSection>
+      </PageContainer>
       
-      <ContentSection>
+      <ContentSection isManagerMode={isManagerMode}>
         <AnimatePresence>
           {!isLoading && (
             <>

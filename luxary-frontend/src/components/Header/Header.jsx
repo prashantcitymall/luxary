@@ -24,15 +24,34 @@ import SignUpModal from './SignUpModal';
 import LoginModal from './LoginModal';
 import UploadModal from './UploadModal';
 import { useUser } from '../../context/UserContext';
+import { useMode } from '../../context/ModeContext';
 import ToggleMode from '../Home/ToggleMode';
 
 const StyledAppBar = styled(AppBar)`
-  background: #9b5de5;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${props => props.mode === 'manager' ? '#bb7e5d' : '#9b5de5'};
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  
+  .MuiButton-root, .MuiIconButton-root, .MuiTypography-root {
+    color: ${props => props.mode === 'manager' ? '#FFFFFF' : '#FFFFFF'};
+    transition: color 0.3s ease;
+  }
+
+  .logo-icon {
+    color: ${props => props.mode === 'manager' ? '#FFFFFF' : '#64B5F6'} !important;
+    transition: color 0.3s ease;
+  }
+
+  .logo-text {
+    background: ${props => props.mode === 'manager' ? 
+      'linear-gradient(45deg, #FFFFFF, #E1F5FE)' : 
+      'linear-gradient(45deg, #fff, #E1F5FE)'};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease;
+  }
 `;
-
-
 
 const Logo = styled(Typography)`
   color: #fff;
@@ -47,21 +66,21 @@ const Logo = styled(Typography)`
 
 const NavButton = styled(Button)`
   margin: 0 8px;
-  color: #fff;
+  color: ${props => props.mode === 'manager' ? '#FFFFFF' : '#FFFFFF'};
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 12px;
   text-transform: none;
   font-size: 0.95rem;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid ${props => props.mode === 'manager' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.3)'};
+  background: ${props => props.mode === 'manager' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.1)'};
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
+    background: ${props => props.mode === 'manager' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.2)'};
+    border-color: ${props => props.mode === 'manager' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.4)'};
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
@@ -73,18 +92,18 @@ const NavButton = styled(Button)`
   & .MuiButton-startIcon {
     margin-right: 8px;
     transition: transform 0.3s ease;
-    color: rgba(255, 255, 255, 0.9);
+    color: ${props => props.mode === 'manager' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
   }
 
   &:hover .MuiButton-startIcon {
     transform: scale(1.2);
-    color: #fff;
+    color: ${props => props.mode === 'manager' ? '#FFFFFF' : '#FFFFFF'};
   }
 `;
 
 const Header = () => {
   const navigate = useNavigate();
-  const [mode, setMode] = useState('customer');
+  const { mode, handleModeChange } = useMode();
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -103,8 +122,9 @@ const Header = () => {
     handleProfileClose();
     logout();
   };
+
   return (
-    <StyledAppBar position="fixed">
+    <StyledAppBar position="fixed" mode={mode}>
       <Toolbar>
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -118,7 +138,7 @@ const Header = () => {
               gap: 2
             }}>
               <Box display="flex" alignItems="center">
-                <HomeIcon className="logo-icon" sx={{ fontSize: 32, mr: 1, color: '#64B5F6' }} />
+                <HomeIcon className="logo-icon" sx={{ fontSize: 32, mr: 1 }} />
                 <Logo className="logo-text" variant="h6">HOTELIFY</Logo>
               </Box>
               {!user && (
@@ -128,40 +148,37 @@ const Header = () => {
                   height: '100%',
                   ml: 2
                 }}>
-                  {ToggleMode && (
-                    <ToggleMode 
-                      onModeChange={(newMode) => {
-                        setMode(newMode);
-                        // Add any additional mode change handling here
-                      }} 
-                      size="small"
-                    />
-                  )}
+                  <ToggleMode 
+                    onModeChange={handleModeChange}
+                    currentMode={mode}
+                  />
                 </Box>
               )}
             </Box>
             <Divider orientation="vertical" sx={{ height: 24, borderColor: 'rgba(255,255,255,0.2)' }} />
-            <Box
-              component={motion.div}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                padding: '8px 16px',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  background: 'rgba(255, 255, 255, 0.15)',
-                }
-              }}
-              onClick={() => setIsUploadOpen(true)}
-            >
-              <FileUploadOutlinedIcon sx={{ fontSize: 20, mr: 1, color: '#fff' }} />
-              <Typography sx={{ color: '#fff', fontSize: '0.9rem' }}>Upload</Typography>
-            </Box>
+            {user && (
+              <Box
+                component={motion.div}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '8px 16px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.15)',
+                  }
+                }}
+                onClick={() => setIsUploadOpen(true)}
+              >
+                <FileUploadOutlinedIcon sx={{ fontSize: 20, mr: 1, color: '#fff' }} />
+                <Typography sx={{ color: '#fff', fontSize: '0.9rem' }}>Upload</Typography>
+              </Box>
+            )}
           </Box>
         </motion.div>
         
@@ -173,29 +190,38 @@ const Header = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Box display="flex" alignItems="center">
-
-            <NavButton 
-              onClick={() => navigate('/list-property')}
-              startIcon={<HomeWorkIcon />}
-            >
-              List Property
-            </NavButton>
-            <IconButton
-              component={motion.button}
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              sx={{ 
-                color: 'white', 
-                mr: 2,
-                background: 'linear-gradient(45deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.1))',
-                padding: '8px',
-                '&:hover': {
-                  background: 'linear-gradient(45deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.2))',
-                }
-              }}
-            >
-              <FavoriteIcon />
-            </IconButton>
+            {mode === 'manager' && (
+              <NavButton 
+                onClick={() => navigate('/list-property')}
+                startIcon={<HomeWorkIcon />}
+                mode={mode}
+              >
+                List Property
+              </NavButton>
+            )}
+            {mode !== 'manager' && (
+              <Box
+                component={motion.div}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '8px 16px',
+                  mr: 2,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.15)',
+                  }
+                }}
+              >
+                <FavoriteIcon sx={{ fontSize: 20, mr: 1, color: '#fff' }} />
+                <Typography sx={{ color: '#fff', fontSize: '0.9rem' }}>Favorite</Typography>
+              </Box>
+            )}
             {user ? (
               <>
                 <Box
@@ -298,9 +324,14 @@ const Header = () => {
             ) : (
               <NavButton 
                 onClick={() => setIsLoginOpen(true)}
+                mode={mode}
                 sx={{ 
-                  background: 'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
-                  borderColor: 'rgba(100, 181, 246, 0.3)'
+                  background: mode === 'manager' ? 
+                    'rgba(0, 0, 0, 0.05)' : 
+                    'linear-gradient(45deg, rgba(100, 181, 246, 0.1), rgba(30, 136, 229, 0.1))',
+                  borderColor: mode === 'manager' ? 
+                    'rgba(0, 0, 0, 0.1)' : 
+                    'rgba(100, 181, 246, 0.3)'
                 }}
               >
                 Login

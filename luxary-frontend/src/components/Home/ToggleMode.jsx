@@ -1,121 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { Box, FormControlLabel, Switch, styled } from '@mui/material';
+import React from 'react';
+import { Box, Switch, FormControlLabel, styled } from '@mui/material';
 
-const StyledSwitch = styled(Switch)(({ theme, size }) => ({
-  '& .MuiSwitch-root': {
-    overflow: 'visible',
-  },
-  width: 52,
-  height: 24,
-  padding: 0,
-  display: 'flex',
-  alignItems: 'center',
+const StyledSwitch = styled(Switch)(({ theme }) => ({
+  width: 62,
+  height: 34,
+  padding: 7,
   '& .MuiSwitch-switchBase': {
-    margin: 0,
+    margin: 1,
     padding: 0,
-    transform: 'translateX(0)',
+    transform: 'translateX(6px)',
     '&.Mui-checked': {
       color: '#fff',
-      transform: 'translateX(28px)',  // Increased to move to the end
+      transform: 'translateX(22px)',
+      '& .MuiSwitch-thumb:before': {
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+          '#fff',
+        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+      },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: 'rgba(244, 158, 76, 0.8)',
-        border: '2px solid rgba(244, 158, 76, 0.4)',
-        boxShadow: '0 0 10px rgba(244, 158, 76, 0.2)',
+        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: '#fff',
-    width: 24,
-    height: 24,
-    margin: 0,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    backgroundColor: '#001e3c',
+    width: 32,
+    height: 32,
     '&:before': {
-      content: '""',
+      content: "''",
       position: 'absolute',
       width: '100%',
       height: '100%',
       left: 0,
       top: 0,
-      borderRadius: '50%',
-      background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
     },
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    borderRadius: 14,
-    border: '2px solid rgba(255, 255, 255, 0.2)',
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    backdropFilter: 'blur(4px)',
-    '&:before': {
-      content: '""',
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.2))',
-    }
+    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    borderRadius: 20 / 2,
   },
 }));
 
-const ToggleMode = ({ onModeChange, size = 'normal' }) => {
-  console.log('ToggleMode rendered'); // Debug log
-  const [isManager, setIsManager] = useState(false);
-  const [showToggle, setShowToggle] = useState(true);
-
-  useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    if (token) {
-      setShowToggle(false);
-    }
-  }, []);
-
-  const handleModeChange = (event) => {
-    const newMode = event.target.checked;
-    setIsManager(newMode);
-    localStorage.setItem('userMode', newMode ? 'manager' : 'customer');
-    if (onModeChange) {
-      onModeChange(newMode);
-    }
+const ToggleMode = ({ onModeChange, currentMode }) => {
+  const handleChange = (event) => {
+    const newMode = event.target.checked ? 'manager' : 'customer';
+    onModeChange(newMode);
   };
 
-  if (!showToggle) return null;
-
   return (
-    <Box sx={{ 
-        display: 'inline-flex',
-        alignItems: 'center',
-        height: '24px',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: '0 8px',
-        borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-          backgroundColor: 'rgba(255, 255, 255, 0.15)',
-        },
-      }}>
+    <Box sx={{
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      padding: '8px 16px',
+      borderRadius: '20px',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    }}>
       <FormControlLabel
         control={
           <StyledSwitch
-            checked={isManager}
-            onChange={handleModeChange}
+            checked={currentMode === 'manager'}
+            onChange={handleChange}
           />
         }
-        label={isManager ? "Manager Mode" : "Customer Mode"}
+        label={currentMode === 'manager' ? "Manager Mode" : "Customer Mode"}
         sx={{ 
-          margin: 0,
-          color: 'white',
+          color: currentMode === 'manager' ? '#333333' : '#FFFFFF',
           '& .MuiFormControlLabel-label': {
-            fontSize: '0.7rem',
+            fontSize: '0.9rem',
             fontWeight: 500,
-            marginLeft: '2px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            whiteSpace: 'nowrap'
           }
         }}
       />
@@ -123,5 +80,4 @@ const ToggleMode = ({ onModeChange, size = 'normal' }) => {
   );
 };
 
-const ExportedToggleMode = ToggleMode;
-export default ExportedToggleMode;
+export default ToggleMode;

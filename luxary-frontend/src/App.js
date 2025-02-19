@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { UserProvider } from './context/UserContext';
+import { ModeProvider } from './context/ModeContext';
 import Header from './components/Header/Header';
 import Home from './pages/Home';
 import ListProperty from './pages/ListProperty';
@@ -57,15 +58,17 @@ function App() {
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <UserProvider>
-            <GlobalStyle />
-            <CssBaseline />
-            <GradientWrapper />
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/list-property" element={<ListProperty />} />
-              <Route path="/tourist-places/:stateId/:cityId/:placeId" element={<TouristPlaceDetails />} />
-            </Routes>
+            <ModeProvider>
+              <GlobalStyle />
+              <CssBaseline />
+              <GradientWrapper />
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/list-property" element={<ListProperty />} />
+                <Route path="/tourist-places/:stateId/:cityId/:placeId" element={<TouristPlaceDetails />} />
+              </Routes>
+            </ModeProvider>
           </UserProvider>
         </LocalizationProvider>
       </ThemeProvider>
