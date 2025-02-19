@@ -3,27 +3,22 @@ import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
-import ToggleSwitch from '../components/ToggleSwitch/ToggleSwitch';
 
 // Import components directly to ensure they exist
+import ToggleMode from '../components/Home/ToggleMode';
 import FeatureBanner from '../components/Home/FeatureBanner';
 import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
 import TouristPlacesSection from '../components/TouristPlaces/TouristPlacesSection';
 import Contact from '../components/Contact/Contact';
 import Footer from '../components/Footer/Footer';
 
-
-
-const HeroSection = styled(Box)(({ isDarkTheme }) => `
+const HeroSection = styled(Box)`
   min-height: 100vh;
   position: relative;
-  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease-in-out;
-`);
+  background: ${props => props.isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+`;
 
-
-
-const PageContainer = styled(Box)(({ isDarkTheme }) => `
+const PageContainer = styled(Box)`
   width: 100%;
   overflow-x: hidden;
   position: fixed;
@@ -32,9 +27,8 @@ const PageContainer = styled(Box)(({ isDarkTheme }) => `
   right: 0;
   bottom: 0;
   overscroll-behavior: none;
-  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease-in-out;
-`);
+  background: ${props => props.isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
+`;
 
 const ContentWrapper = styled(Container)`
   position: relative;
@@ -134,7 +128,7 @@ const LoadingSpinner = styled(Box)`
   padding: 2rem;
 `;
 
-const ContentSection = styled(Box)(({ isDarkTheme }) => `
+const ContentSection = styled(Box)`
   color: white;
   scroll-behavior: smooth;
   overflow-y: auto;
@@ -143,8 +137,7 @@ const ContentSection = styled(Box)(({ isDarkTheme }) => `
   overscroll-behavior-x: none;
   touch-action: pan-y pinch-zoom;
   position: relative;
-  background: ${isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease-in-out;
+  background: linear-gradient(135deg, #f49e4c, #30001A);
   
   & > * {
     position: relative;
@@ -154,14 +147,18 @@ const ContentSection = styled(Box)(({ isDarkTheme }) => `
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;
   }
-`);
+`;
 
 const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isManagerMode, setIsManagerMode] = React.useState(false);
 
   React.useEffect(() => {
-    // Add smooth scrolling behavior to the document
+    const savedMode = localStorage.getItem('userMode');
+    setIsManagerMode(savedMode === 'manager');
+  }, []);
+
+  React.useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
     setIsLoading(false);
     
@@ -181,29 +178,13 @@ const Home = () => {
       overflowX: 'hidden', 
       touchAction: 'pan-y pinch-zoom', 
       overscrollBehavior: 'none',
-      background: isDarkTheme ? '#426a5a' : 'linear-gradient(135deg, #f49e4c, #30001A)',
-      transition: 'background 0.3s ease-in-out'
+      background: isManagerMode ? '#ff6b6c' : 'linear-gradient(135deg, #f49e4c, #30001A)',
+      transition: 'background 0.3s ease',
     }}>
-      <HeroSection isDarkTheme={isDarkTheme}>
+      <HeroSection isManagerMode={isManagerMode}>
+        <ToggleMode onModeChange={setIsManagerMode} />
+        {/* Add a comment to ensure ToggleMode is rendered */}
         <ContentWrapper maxWidth="xl">
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            mb: 4,
-            mt: 0,
-            '& > *': {
-              transform: 'scale(0.95)',
-              transition: 'transform 0.3s ease',
-              '&:hover': {
-                transform: 'scale(0.98)',
-              }
-            }
-          }}>
-            <ToggleSwitch
-              checked={isDarkTheme}
-              onChange={(e) => setIsDarkTheme(e.target.checked)}
-            />
-          </Box>
           <MainContent>
             <SearchForm />
             <SloganWrapper>

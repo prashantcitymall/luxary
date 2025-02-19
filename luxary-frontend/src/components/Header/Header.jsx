@@ -24,6 +24,7 @@ import SignUpModal from './SignUpModal';
 import LoginModal from './LoginModal';
 import UploadModal from './UploadModal';
 import { useUser } from '../../context/UserContext';
+import ToggleMode from '../Home/ToggleMode';
 
 const StyledAppBar = styled(AppBar)`
   background: #9b5de5;
@@ -83,6 +84,7 @@ const NavButton = styled(Button)`
 
 const Header = () => {
   const navigate = useNavigate();
+  const [mode, setMode] = useState('customer');
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -109,30 +111,34 @@ const Header = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Box display="flex" alignItems="center" gap={3}>
-            <Box 
-              display="flex" 
-              alignItems="center" 
-              onClick={() => navigate('/')} 
-              sx={{ 
-                cursor: 'pointer',
-                '&:hover': {
-                  '& .logo-icon': {
-                    transform: 'scale(1.1)',
-                    transition: 'transform 0.3s ease'
-                  },
-                  '& .logo-text': {
-                    opacity: 0.8,
-                    transition: 'opacity 0.3s ease'
-                  }
-                }
-              }}
-              component={motion.div}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <HomeIcon className="logo-icon" sx={{ fontSize: 32, mr: 1, color: '#64B5F6' }} />
-              <Logo className="logo-text" variant="h6">HOTELIFY</Logo>
+          <Box display="flex" alignItems="center" gap={2}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box display="flex" alignItems="center">
+                <HomeIcon className="logo-icon" sx={{ fontSize: 32, mr: 1, color: '#64B5F6' }} />
+                <Logo className="logo-text" variant="h6">HOTELIFY</Logo>
+              </Box>
+              {!user && (
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '100%',
+                  ml: 2
+                }}>
+                  {ToggleMode && (
+                    <ToggleMode 
+                      onModeChange={(newMode) => {
+                        setMode(newMode);
+                        // Add any additional mode change handling here
+                      }} 
+                      size="small"
+                    />
+                  )}
+                </Box>
+              )}
             </Box>
             <Divider orientation="vertical" sx={{ height: 24, borderColor: 'rgba(255,255,255,0.2)' }} />
             <Box

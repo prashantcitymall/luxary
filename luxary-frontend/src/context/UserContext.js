@@ -49,6 +49,12 @@ export const UserProvider = ({ children }) => {
     authService.logout();
   };
 
+  const themes = {
+    customer: {
+      backgroundColor: '#f79256',
+    },
+  };
+
   return (
     <UserContext.Provider value={{ user, loading, login, logout }}>
       {!loading && children}

@@ -4,11 +4,76 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import { indianStates, indianCities, touristPlaces } from '../../utils/indianLocations';
 
+const menuProps = {
+  PaperProps: {
+    style: {
+      backgroundColor: '#218380',
+      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+      marginTop: '8px',
+    },
+  },
+  MenuListProps: {
+    style: {
+      padding: '8px 0',
+    },
+  },
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'left',
+  },
+  transformOrigin: {
+    vertical: 'top',
+    horizontal: 'left',
+  },
+};
+
+const selectStyles = {
+  '& .MuiSelect-select': {
+    color: 'white',
+  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'white',
+  },
+};
+
 const LocationWrapper = styled(Box)`
   background: transparent;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1000;
+  
+  .MuiPaper-root {
+    background-color: #218380 !important;
+  }
+  
+  .MuiMenuItem-root {
+    color: white !important;
+    padding: 12px 16px !important;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+  
+  .MuiSelect-select {
+    color: white !important;
+  }
+  
+  .MuiInputLabel-root {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
 `;
 
 const SearchTextField = styled(TextField)`
@@ -43,6 +108,23 @@ const StyledFormControl = styled(FormControl)`
     &.Mui-focused {
       background: rgba(255, 255, 255, 0.1);
     }
+  }
+
+  & .MuiMenu-paper {
+    background-color: #218380;
+  }
+
+  & .MuiSelect-select {
+    color: white;
+  }
+
+  & .MuiMenuItem-root {
+    color: white;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
   }
   
   & .MuiOutlinedInput-notchedOutline {
@@ -132,7 +214,7 @@ const LocationSelector = ({ onLocationChange }) => {
 
   return (
     <LocationWrapper>
-      <Typography variant="h6" gutterBottom sx={{ color: '#1976d2', fontWeight: 600 }}>
+      <Typography variant="h6" gutterBottom sx={{ color: '#fff', fontWeight: 600 }}>
         Location
       </Typography>
       
@@ -142,6 +224,24 @@ const LocationSelector = ({ onLocationChange }) => {
           value={selectedState}
           label="State"
           onChange={handleStateChange}
+          sx={selectStyles}
+          MenuProps={menuProps}
+          inputProps={{
+            MenuProps: {
+
+            PaperProps: {
+              style: {
+                backgroundColor: '#218380',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              },
+            },
+            MenuListProps: {
+              style: {
+                padding: 0,
+              },
+            },
+          }}
+
           onOpen={() => {
             setIsStateOpen(true);
             // Clear search when opening
@@ -250,6 +350,24 @@ const LocationSelector = ({ onLocationChange }) => {
           value={selectedCity}
           label="City"
           onChange={handleCityChange}
+          sx={selectStyles}
+          MenuProps={menuProps}
+          inputProps={{
+            MenuProps: {
+
+            PaperProps: {
+              style: {
+                backgroundColor: '#218380',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              },
+            },
+            MenuListProps: {
+              style: {
+                padding: 0,
+              },
+            },
+          }}
+
           onOpen={() => {
             setIsCityOpen(true);
             setCitySearchTerm('');
