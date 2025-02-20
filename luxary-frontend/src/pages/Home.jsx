@@ -1,270 +1,249 @@
 import React, { lazy, Suspense } from 'react';
-import { Box, Container, Typography, CircularProgress } from '@mui/material';
+import { Box, Container, Typography, CircularProgress, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchForm from '../components/SearchForm/SearchForm';
 import { useMode } from '../context/ModeContext';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 // Import components directly to ensure they exist
-import ToggleMode from '../components/Home/ToggleMode';
 import FeatureBanner from '../components/Home/FeatureBanner';
 import PropertyTypeSlider from '../components/Home/PropertyTypeSlider';
 import TouristPlacesSection from '../components/TouristPlaces/TouristPlacesSection';
 import Contact from '../components/Contact/Contact';
 import Footer from '../components/Footer/Footer';
 
+const PageContainer = styled(Box)`
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: ${props => props.isManagerMode ? '#bb7e5d' : '#fff'};
+`;
+
 const HeroSection = styled(Box)`
   min-height: 100vh;
   position: relative;
-  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease;
-`;
+  padding-top: 80px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 900px;
+    height: 900px;
+    background: ${props => props.isManagerMode ? 
+      'linear-gradient(135deg, #d4a28c, #bb7e5d)' : 
+      'linear-gradient(135deg, #FFB6C1, #FF69B4)'};
+    border-radius: 50%;
+    z-index: 0;
+  }
 
-const PageContainer = styled(Box)`
-  width: 100%;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 100vh;
-  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: ${props => props.isManagerMode ? 
+      'linear-gradient(135deg, #bb7e5d, #a66d4f)' : 
+      'linear-gradient(135deg, #FFE4E1, #FFB6C1)'};
+    border-radius: 50%;
+    z-index: 0;
+  }
 `;
 
 const ContentWrapper = styled(Container)`
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  padding-top: 80px;
-  overflow-y: visible;
-  overflow-x: hidden;
-  touch-action: pan-y pinch-zoom;
-  color: ${props => props.isManagerMode ? '#FFFFFF' : '#FFFFFF'};
-  
-  @media (max-width: 600px) {
-    padding-top: 64px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
 `;
 
 const MainContent = styled(Box)`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
+  gap: 4rem;
   margin-bottom: 2rem;
+  padding-top: 4rem;
+  position: relative;
+  width: 100%;
   
   @media (max-width: 900px) {
     flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 600px) {
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 2rem;
+    padding-top: 2rem;
   }
 `;
 
-const SloganWrapper = styled(Box)`
+const TextContent = styled(Box)`
   flex: 1;
   max-width: 600px;
-  padding: 2rem;
+  text-align: center;
+`;
+
+const Title = styled(Typography)`
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: ${props => props.isManagerMode ? '#fff' : '#4A4A4A'};
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
   
   @media (max-width: 900px) {
-    max-width: 100%;
-    text-align: center;
-    padding: 1.5rem;
+    font-size: 3.5rem;
   }
   
   @media (max-width: 600px) {
-    padding: 1rem;
+    font-size: 2.8rem;
   }
 `;
 
-const SloganText = styled(motion.div)`
-  font-family: 'Playfair Display', serif;
-  color: ${props => props.isManagerMode ? '#FFFFFF' : 'white'};
-  text-shadow: ${props => props.isManagerMode ? '2px 2px 4px rgba(0, 0, 0, 0.3)' : '2px 2px 4px rgba(0, 0, 0, 0.3)'};
-  
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    background: ${props => props.isManagerMode ? 'none' : 'linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8))'};
-    -webkit-background-clip: ${props => props.isManagerMode ? 'none' : 'text'};
-    -webkit-text-fill-color: ${props => props.isManagerMode ? '#FFFFFF' : 'transparent'};
-    
-    @media (max-width: 1200px) {
-      font-size: 3.5rem;
-    }
-    
-    @media (max-width: 900px) {
-      font-size: 3rem;
-    }
-    
-    @media (max-width: 600px) {
-      font-size: 2.5rem;
-    }
-    
-    @media (max-width: 400px) {
-      font-size: 2rem;
-    }
-  }
-  
-  .highlight {
-    color: #FFD700;
-    -webkit-text-fill-color: #FFD700;
+const Subtitle = styled(Typography)`
+  font-size: 1.2rem;
+  color: ${props => props.isManagerMode ? 'rgba(255, 255, 255, 0.8)' : '#666'};
+  margin-bottom: 2rem;
+  max-width: 500px;
+`;
+
+const SeeMoreButton = styled(motion.button)`
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  background: ${props => props.isManagerMode ? '#8B4513' : '#FF69B4'};
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
 `;
 
-const LoadingSpinner = styled(Box)`
+const SearchFormWrapper = styled(Box)`
+  flex: 1;
+  max-width: 580px;
+  min-width: 580px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-right: auto;
+  margin-left: -5%;
+  transform: translateX(-5%);
+  
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    padding: 2rem;
+    margin-left: 0;
+    transform: none;
+  }
+`;
+
+const SocialIcons = styled(Box)`
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
 `;
 
-const ContentSection = styled(Box)`
-  color: ${props => props.isManagerMode ? '#FFFFFF' : 'white'};
-  scroll-behavior: smooth;
-  overflow-y: visible;
-  overflow-x: hidden;
-  padding: 4rem 0 0;
-  position: relative;
-  background: ${props => props.isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)'};
-  transition: background 0.3s ease;
-  
-  & > * {
-    position: relative;
-    z-index: 1;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    scroll-behavior: smooth;
+const SocialIconButton = styled(IconButton)`
+  background: ${props => props.isManagerMode ? 'rgba(139, 69, 19, 0.1)' : 'rgba(255, 105, 180, 0.1)'};
+  color: ${props => props.isManagerMode ? '#8B4513' : '#FF69B4'};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${props => props.isManagerMode ? 'rgba(139, 69, 19, 0.2)' : 'rgba(255, 105, 180, 0.2)'};
+    transform: translateY(-2px);
   }
 `;
 
 const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
-  const { mode, handleModeChange } = useMode();
+  const { mode } = useMode();
   const isManagerMode = mode === 'manager';
 
   React.useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
     setIsLoading(false);
-    
-    return () => {
-      document.documentElement.style.scrollBehavior = '';
-    };
   }, []);
 
-  const fallbackLoader = (
-    <LoadingSpinner>
-      <CircularProgress sx={{ color: 'white' }} />
-    </LoadingSpinner>
-  );
-
   return (
-    <Box sx={{ 
-      overflowX: 'hidden',
-      overflowY: 'auto', 
-      touchAction: 'pan-y pinch-zoom', 
-      minHeight: '100vh',
-      transition: 'background 0.3s ease',
-      background: isManagerMode ? '#bb7e5d' : 'linear-gradient(135deg, #f49e4c, #30001A)',
-    }}>
-      <PageContainer isManagerMode={isManagerMode}>
-        <ContentWrapper isManagerMode={isManagerMode}>
+    <PageContainer isManagerMode={isManagerMode}>
+      <HeroSection isManagerMode={isManagerMode}>
+        <ContentWrapper>
           <MainContent>
-            <SearchForm />
-            <SloganWrapper>
-              <SloganText isManagerMode={isManagerMode}>
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  {isManagerMode 
-                    ? "Manage Your Properties with Ease"
-                    : "Do not disturb 🚪 🤚"}
-                </motion.h1>
-                {!isManagerMode && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                  >
-                    <Typography variant="h5" sx={{ 
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      mt: 2,
-                      fontFamily: 'Playfair Display, serif',
-                      fontWeight: 500,
-                      fontSize: {
-                        xs: '1.5rem',
-                        sm: '1.8rem',
-                        md: '2rem'
-                      }
-                    }}>
-                      Embarking on a journey of peace, pampering, and pillow forts.
-                    </Typography>
-                  </motion.div>
-                )}
-              </SloganText>
-            </SloganWrapper>
+            <TextContent>
+              <Title variant="h1" isManagerMode={isManagerMode}>
+                HOTEL & RESTAURANT
+              </Title>
+              <Subtitle isManagerMode={isManagerMode}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing
+              </Subtitle>
+              <SeeMoreButton
+                isManagerMode={isManagerMode}
+                component={motion.button}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                SEE MORE
+              </SeeMoreButton>
+            </TextContent>
+            <SearchFormWrapper>
+              <SearchForm />
+            </SearchFormWrapper>
           </MainContent>
         </ContentWrapper>
-      </PageContainer>
-      
-      <ContentSection isManagerMode={isManagerMode}>
-        <AnimatePresence>
-          {!isLoading && (
-            <>
-              <Container maxWidth="xl">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <FeatureBanner />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                >
-                  <PropertyTypeSlider />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                >
-                  <TouristPlacesSection />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                >
-                  <Box sx={{ mt: 4 }}>
-                    <Contact />
-                  </Box>
-                </motion.div>
-              </Container>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-              >
-                <Footer />
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </ContentSection>
-    </Box>
+        
+        <SocialIcons>
+          <SocialIconButton isManagerMode={isManagerMode}>
+            <InstagramIcon />
+          </SocialIconButton>
+          <SocialIconButton isManagerMode={isManagerMode}>
+            <FacebookIcon />
+          </SocialIconButton>
+          <SocialIconButton isManagerMode={isManagerMode}>
+            <TwitterIcon />
+          </SocialIconButton>
+        </SocialIcons>
+      </HeroSection>
+
+      {!isLoading && (
+        <Box sx={{ position: 'relative', zIndex: 1, background: '#fff' }}>
+          <Container maxWidth="xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <FeatureBanner />
+              <PropertyTypeSlider />
+              <TouristPlacesSection />
+              <Contact />
+            </motion.div>
+          </Container>
+          <Footer />
+        </Box>
+      )}
+    </PageContainer>
   );
 };
 
